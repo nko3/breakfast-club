@@ -1,0 +1,19 @@
+{
+  "name": "nko3-breakfast-club",
+  "version": "0.0.0",
+  "description": "Breakfast Club",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:nko3/breakfast-club.git"
+  },
+  "dependencies": {
+  },
+  "engines": {
+    "node": "0.8.x"
+  },
+  "subdomain": "breakfast-club.nko3"
+}
