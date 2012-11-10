@@ -94,6 +94,58 @@
 				}
 			});
 
+			function getWord(square, direction){
+				if ($(square).hasClass('black')){
+					return null;
+				}
+				var word = {
+					clue:'',
+					squares: [],
+					answer: ''
+				}
+				var face = $(square).parent();
+				var allSquares = face.children();
+				var index = $(square).index();
+				console.log(index);
+				if (direction == 'vertical'){
+					while (index > 15){
+						if ($(allSquares[index-15]).hasClass('black')){
+							break;
+						}else {
+							index-=15;
+						}
+					}
+					while(index < 240){
+						word.squares.push(allSquares[index]);
+						if ($(allSquares[index+15]).hasClass('black')){
+							break;
+						}else {
+							index+=15;
+						}
+					}
+				}else {
+					var place = index % 15;
+					var min = index - place;
+					var max = index + (15-place);
+					while (index > min){
+						if ($(allSquares[index-1]).hasClass('black')){
+							break;
+						}else {
+							index--;
+						}
+					}
+					while(index < max){
+						word.squares.push(allSquares[index]);
+						if ($(allSquares[index+1]).hasClass('black')){
+							break;
+						}else {
+							index++;
+						}
+					}
+				}
+				console.log(word.squares);
+				return word;
+			}
 			// on load of page
 			$(function(){
 				// when the client clicks SEND
@@ -110,6 +162,22 @@
 						$(this).blur();
 						$('#datasend').focus().click();
 					}
+				});
+				$(document).on('click', '.square', function(){
+					var direction = 'horizontal';
+					if ($(this).hasClass('selected')){
+						if ($(this).hasClass('horizontal')){
+							direction = 'vertical';
+						}
+					}
+					$('.selected').removeClass('selected');
+					$('.horizontal').removeClass('horizontal');
+					$('.vertical').removeClass('vertical');
+					var word = getWord(this, direction);
+					if (!word){
+						return;
+					}
+					$(word.squares).addClass('selected').addClass(direction);
 				});
 			});
 		</script>
