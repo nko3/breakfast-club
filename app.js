@@ -9,8 +9,8 @@ var express = require('express')
   , path = require('path');
 
   var app = express();
-  var server = require('http').createServer(app);
-  var io = require('socket.io').listen(server);
+  //var server = require('http').createServer(app);
+  var io = require('socket.io');
 
 // Setup db connection
 var mongoose = require('mongoose');
@@ -29,9 +29,8 @@ app.configure(function(){
   app.use(app.router);
   app.use(require('less-middleware')({ src: __dirname + '/public' }));
   app.use(express.static(path.join(__dirname, 'public')));
+  app.use('/static', express.static(__dirname + '/static'));
 });
-
-server.listen(3001);
 
 app.configure('development', function(){
   app.use(express.errorHandler());
@@ -122,7 +121,7 @@ var buildGrid = function(obj, gameID) {
 
   console.log('Game loaded for: ' + gameID);
 
-  grid = {
+  crossword = {
     gameID: gameID,
     answers: obj.answers,
     grid: grid,
@@ -132,7 +131,7 @@ var buildGrid = function(obj, gameID) {
     down: obj.clues.down
   };
 
-  grids.push(grid);
+  grids.push(crossword);
 };
 
 // Get a random crossword from xwordinfo
@@ -170,9 +169,11 @@ getPuzzle('bottom');
 app.get('/', routes.index);
 app.get('/users', user.list);
 
-http.createServer(app).listen(app.get('port'), function(){
+var server = http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
+
+io = io.listen(server);
 
 // usernames which are currently connected to the chat
 var usernames = {};

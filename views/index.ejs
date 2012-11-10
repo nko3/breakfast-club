@@ -54,9 +54,9 @@
 
         <script src="http://code.jquery.com/jquery.min.js"></script>
         <script src="scripts/cube.js"></script>
-        <script src="http://localhost:3001/socket.io/socket.io.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
        	<script>
-			var socket = io.connect('http://localhost:3001');
+			var socket = io.connect(document.URL);
 			var grid = [];
 
 			// on connection to server, ask for user's name with an anonymous callback
