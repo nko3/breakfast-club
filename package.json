@@ -1,7 +1,7 @@
 {
   "name": "nko3-breakfast-club",
-  "description": "Breakfast Club",
   "version": "0.0.0",
+  "description": "Breakfast Club",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -11,13 +11,9 @@
     "url": "git@github.com:nko3/breakfast-club.git"
   },
   "dependencies": {
-    "derby": "*",
-    "express": "3.0.0beta4",
-    "gzippo": ">=0.1.7"
   },
   "engines": {
     "node": "0.8.x"
   },
-  "subdomain": "breakfast-club.nko3",
-  "private": true
+  "subdomain": "breakfast-club.nko3"
 }
