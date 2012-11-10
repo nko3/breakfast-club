@@ -30,6 +30,9 @@
                 </div>
             </section>
 
+            <section id="clue">
+
+        	</section>
             <section id="show-buttons">
               <button class="show-front">Show Front (1)</button>
               <button class="show-back">Show Back (2)</button>
@@ -79,9 +82,10 @@
 			});
 
 			socket.on('updategrid', function(data) {
-				$('#' + data.gameID).empty();
+				$('#' + data.gameID)
+					.empty()
+					.data('data', data);
 				grid = data.grid;
-				console.log(grid);
 
 				for (i=0; i < grid.length; i++) {
 					if (grid[i].active === "active") {
@@ -103,9 +107,10 @@
 					answer: ''
 				}
 				var face = $(square).parent();
+				var data = face.data('data');
 				var allSquares = face.children();
 				var index = $(square).index();
-				console.log(index);
+				var start;
 				if (direction == 'vertical'){
 					while (index > 15){
 						if ($(allSquares[index-15]).hasClass('black')){
@@ -114,6 +119,7 @@
 							index-=15;
 						}
 					}
+					start = index;
 					while(index < 240){
 						word.squares.push(allSquares[index]);
 						if ($(allSquares[index+15]).hasClass('black')){
@@ -122,6 +128,8 @@
 							index+=15;
 						}
 					}
+					word.clue = data.down[data.gridnums[start]];
+					word.answer = data.answers.down[data.gridnums[start]];
 				}else {
 					var place = index % 15;
 					var min = index - place;
@@ -133,6 +141,7 @@
 							index--;
 						}
 					}
+					start = index;
 					while(index < max){
 						word.squares.push(allSquares[index]);
 						if ($(allSquares[index+1]).hasClass('black')){
@@ -141,8 +150,9 @@
 							index++;
 						}
 					}
+					word.clue = data.across[data.gridnums[start]];
+					word.answer = data.answers.across[data.gridnums[start]];
 				}
-				console.log(word.squares);
 				return word;
 			}
 			// on load of page
@@ -176,6 +186,7 @@
 					if (!word){
 						return;
 					}
+					$('#clue').html(word.clue);
 					$(word.squares).addClass('selected').addClass(direction);
 				});
 			});
