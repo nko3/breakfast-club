@@ -90,7 +90,8 @@
 
 				for (i=0; i < grid.length; i++) {
 					if (grid[i].active === "active") {
-						$('#' + data.gameID).append('<div class="square">' + grid[i].letter + '</div>');
+						var clue = (data.gridnums[i] != '0') ? '<span class="clueNum">' + data.gridnums[i] + '</span>' : '';
+						$('#' + data.gameID).append('<div class="square">' + clue + '</div>');
 					}
 					else {
 						$('#' + data.gameID).append('<div class="square black"></div>');
@@ -190,7 +191,7 @@
 					if (!word){
 						return;
 					}
-					$('#clue').html(word.clue);
+					$('#clue').html(direction + ' ' + word.clue);
 					$(word.squares).addClass('selected').addClass(direction);
 				});
 			});
