@@ -1,6 +1,6 @@
 {
   "name": "nko3-breakfast-club",
-  "version": "0.0.0-12",
+  "version": "0.0.1-1",
   "description": "Breakfast Club",
   "main": "app.js",
   "scripts": {
@@ -15,7 +15,9 @@
     "mongoose": "3.2.0",
     "ejs": "*",
     "less-middleware": "*",
-    "socket.io": "0.9"
+    "socket.io": "0.9",
+    "session.socket.io": "*",
+    "connect": "*"
   },
   "engines": {
     "node": "0.8.x"

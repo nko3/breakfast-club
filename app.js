@@ -4,6 +4,7 @@
 
 var express = require('express')
   , routes = require('./routes')
+  , connect = require('connect')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path');
@@ -12,24 +13,26 @@ var express = require('express')
   //var server = require('http').createServer(app);
   var io = require('socket.io');
 
+  var cookieParser = express.cookieParser('your secret sauce')
+  , sessionStore = new connect.middleware.session.MemoryStore();
+
 // Setup db connection
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://nodejitsu_nko3-breakfast-club:c5hnji4ar2keqh9eahr962v0r@ds039277.mongolab.com:39277/nodejitsu_nko3-breakfast-club_nodejitsudb4733696326');
 
 app.configure(function(){
-  app.set('port', process.env.PORT || 8000);
+  app.set('port', 8000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(express.favicon());
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
-  app.use(express.cookieParser('your secret here'));
-  app.use(express.session());
+  app.use(cookieParser);
+  app.use(express.session({ store: sessionStore }));
   app.use(app.router);
   app.use(require('less-middleware')({ src: __dirname + '/public' }));
   app.use(express.static(path.join(__dirname, 'public')));
-  app.use('/static', express.static(__dirname + '/static'));
 });
 
 app.configure('development', function(){
@@ -178,9 +181,15 @@ io = io.listen(server);
 // usernames which are currently connected to the chat
 var usernames = {};
 
+var SessionSockets = require('session.socket.io')
+  , sessionSockets = new SessionSockets(io, sessionStore, cookieParser);
+
+sessionSockets.on('connection', function (socket) {
+  console.log('session user');
+});
+
 io.sockets.on('connection', function (socket) {
   
-
   // when the client emits 'sendchat', this listens and executes
   socket.on('sendchat', function (data) {
     // we tell the client to execute 'updatechat' with 2 parameters
