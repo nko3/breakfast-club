@@ -1,27 +1,59 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <button onclick="pressed(); return false;">Pressed</button>
-    <script src="http://localhost:3001/socket.io/socket.io.js"></script>
-	<script>
-	  var socket = io.connect('http://localhost:3001');
-	  socket.on('connect', function () {
-	    socket.emit('set nickname', prompt('What is your nickname?'));
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>LexiCube</title>
+        <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
+        <link rel="stylesheet" href="stylesheets/cube.css" />
+    </head>
+    <body>
+        <div class="topBar">
+          <img id="lexiLogo" src="images/logo.png" />
+          <iframe id="nodeVote" src="http://nodeknockout.com/iframe/breakfast-club" frameborder="0" scrolling="no" allowtransparency="true" width="115" height="25"></iframe>
+        </div>
+        
+        <div id="wrapper">
+        
+          <div id="flipRight" class="foundicon-right-arrow"></div>
+          <div id="flipLeft" class="foundicon-left-arrow"></div>
+          <div id="flipUp" class="foundicon-up-arrow"></div>
+          <div id="flipDown" class="foundicon-down-arrow"></div>
+        
+            <section id="threeDspace">
+                <div id="cube">
+                    <div class="face" id="front"></div>
+                    <div class="face" id="back"></div>
+                    <div class="face" id="right"></div>
+                    <div class="face" id="left"></div>
+                    <div class="face" id="top"></div>
+                    <div class="face" id="bottom"></div>
+                </div>
+            </section>
 
-	    socket.on('user connected', function () {
-	      console.log('Someone else connected!');
-	    });
+            <section id="show-buttons">
+              <button class="show-front">Show Front (1)</button>
+              <button class="show-back">Show Back (2)</button>
+              <button class="show-right">Show Right (3)</button>
+              <button class="show-left">Show Left (4)</button>
+              <button class="show-top">Show Top (5)</button>
+              <button class="show-bottom">Show Bottom (6)</button>
+            </section>
+        </div>
+        <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="scripts/cube.js"></script>
+        <script src="http://localhost:3001/socket.io/socket.io.js"></script>
+        <script>
+          var socket = io.connect('http://localhost:3001');
+          socket.on('connect', function () {
+            socket.emit('set nickname', prompt('What is your nickname?'));
 
-	    socket.on('ready', function () {
-	      console.log('Connected !');
-	    });
-	  });
-	</script>
-  </body>
+            socket.on('user connected', function () {
+              console.log('Someone else connected!');
+            });
+
+            socket.on('ready', function () {
+              console.log('Connected !');
+            });
+          });
+        </script>
+    </body>
 </html>
