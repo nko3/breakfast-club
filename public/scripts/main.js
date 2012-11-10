@@ -1,5 +1,6 @@
 var socket = io.connect(document.URL);
 var grid = [];
+var currentWord;
 
 // on connection to server, ask for user's name with an anonymous callback
 socket.on('connect', function(){
@@ -128,6 +129,29 @@ $(function(){
 			$('#datasend').focus().click();
 		}
 	});
+	$(document).keypress(function(e){
+		if (currentWord.done){
+			return;
+		}
+		var letter = String.fromCharCode(e.which);
+		letter = letter.match(/[A-Za-z]/);
+		var box = false;
+		for (var i in currentWord.squares){
+			var square = currentWord.squares[i];
+			if ($(square).find('.letter').length > 0){
+				continue;
+			}
+			box = square;
+			break;
+		}
+		if (!box){
+			currentWord.done = true;
+
+			return;
+		}
+		socket.emit('sendletter', {letter:letter, index:$(box).index()});
+		$(box).append('<span class="letter">'+letter+"</span>");
+	});
 	$(document).on('click', '.square', function(){
 		var direction = ($('.selected').hasClass('vertical')) ? 'vertical' : 'horizontal';
 		
@@ -148,5 +172,6 @@ $(function(){
 		var clueDir = (direction === 'vertical') ? 'DOWN' : 'ACROSS';
 		$('#clue').html('<strong>' + clueDir + '</strong> ' + word.clue);
 		$(word.squares).addClass('selected').addClass(direction);
+		currentWord = word;
 	});
 });
