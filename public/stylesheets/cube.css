@@ -175,13 +175,15 @@ body {
   width: 25%;
   border-right: 2px solid black;
   padding: 10px;
-  overflow: scroll-y;
+  overflow-y: auto;
+  overflow-x: hidden;
   height: 455px;
 }
-#chat-window .chat {
+#chat-window #conversation {
   float: left;
   width: 75%;
-  overflow: scroll-y;
+  overflow-y: auto;
+  overflow-x: hidden;
   height: 455px;
   padding: 10px;
 }

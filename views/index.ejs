@@ -47,9 +47,7 @@
 				<b>Users</b>
 				<div id="users"></div>
 			</div>
-			<div class="chat">
-				<div id="conversation"></div>
-			</div>
+			<div id="conversation"></div>
 			<div id="input">
 				<input id="data" style="width:300px;" />
 				<input type="button" id="datasend" value="send" />
@@ -66,12 +64,14 @@
 			// on connection to server, ask for user's name with an anonymous callback
 			socket.on('connect', function(){
 				// call the server-side function 'adduser' and send one parameter (value of prompt)
-				socket.emit('adduser', prompt("What's your name?"));
+				socket.emit('adduser', prompt("What's your name?") || 'Anonymous');
 			});
 
 			// listener, whenever the server emits 'updatechat', this updates the chat body
 			socket.on('updatechat', function (username, data) {
-				$('#conversation').append('<b>'+username + ':</b> ' + data + '<br>');
+				var convo = $('#conversation');
+				convo.append('<b>'+username + ':</b> ' + data + '<br>');
+				convo.scrollTop(convo.prop('scrollHeight'));
 			});
 
 			// listener, whenever the server emits 'updateusers', this updates the username list
@@ -163,7 +163,10 @@
 					var message = $('#data').val();
 					$('#data').val('');
 					// tell server to execute 'sendchat' and send along one parameter
-					socket.emit('sendchat', message);
+					if (message) {
+						socket.emit('sendchat', message);
+					}
+					$('#data').focus();
 				});
 
 				// when the client hits ENTER on their keyboard
