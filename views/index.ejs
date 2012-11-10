@@ -109,11 +109,12 @@
 				}
 				var face = $(square).parent();
 				var data = face.data('data');
+				console.log(data);
 				var allSquares = face.children();
 				var index = $(square).index();
 				var start;
 				if (direction == 'vertical'){
-					while (index > 15){
+					while (index >= 15){
 						if ($(allSquares[index-15]).hasClass('black')){
 							break;
 						}else {
@@ -121,7 +122,7 @@
 						}
 					}
 					start = index;
-					while(index < 240){
+					while(index < allSquares.length){
 						word.squares.push(allSquares[index]);
 						if ($(allSquares[index+15]).hasClass('black')){
 							break;
@@ -130,7 +131,6 @@
 						}
 					}
 					word.clue = data.down[data.gridnums[start]];
-					word.answer = data.answers.down[data.gridnums[start]];
 				}else {
 					var place = index % 15;
 					var min = index - place;
@@ -152,8 +152,8 @@
 						}
 					}
 					word.clue = data.across[data.gridnums[start]];
-					word.answer = data.answers.across[data.gridnums[start]];
 				}
+				console.log(word);
 				return word;
 			}
 			// on load of page
