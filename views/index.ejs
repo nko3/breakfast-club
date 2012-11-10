@@ -206,7 +206,8 @@
 					if (!word){
 						return;
 					}
-					$('#clue').html(direction + ' ' + word.clue);
+					var clueDir = (direction === 'vertical') ? 'DOWN' : 'ACROSS';
+					$('#clue').html('<strong>' + clueDir + '</strong> ' + word.clue);
 					$(word.squares).addClass('selected').addClass(direction);
 				});
 			});

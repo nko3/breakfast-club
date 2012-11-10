@@ -1,36 +1,3 @@
-var init = function() {
-	var box = $('#cube'),
-    	showPanelButtons = $('#show-buttons button'),
-    	panelClassName = 'show-front',
-    	size = 15,
-    	faces = ["front","back","right","left","top","bottom"];
-
-    	onButtonClick = function( event ){
-        	box.removeClass( panelClassName );
-        	panelClassName = event.target.className;
-        	box.addClass( panelClassName );
-    	};
-
-	for (var i=0, len = showPanelButtons.length; i < len; i++) {
-    	showPanelButtons[i].addEventListener( 'click', onButtonClick, false);
-	}
-
-	//for each face
-	for (var i=0; i < 6; i++) {
-    	//insert the appropriate number of squares
-    	for (var j=0, numSquares = size*size; j < numSquares; j++) {
-    		if (j===0) {
-        		$('#' + faces[i]).append('<div class="square">' + (i+1) + '</div>');
-      		} else {
-      			var squareClass = (Math.random() < 0.5) ? 'square' : 'square black';
-      			$('#' + faces[i]).append('<div class="' + squareClass + '"></div>');
-      		}   
-    	} 
-  	}
-};
-
-
-
 var findAdjacentSide = function(currentSide,direction) {
 	var adjacentSide;
 
@@ -92,5 +59,3 @@ $('#flipRight').click(function() {flipCube('right');});
 $('#flipLeft').click(function() {flipCube('left');});
 $('#flipUp').click(function() {flipCube('up');});
 $('#flipDown').click(function() {flipCube('down');});
-
-window.addEventListener( 'DOMContentLoaded', init, false);
