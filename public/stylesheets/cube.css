@@ -94,6 +94,7 @@ body {
   margin: 0;
   padding: 25px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  min-width: 1280px;
 }
 * {
   -moz-box-sizing: border-box;
@@ -123,13 +124,17 @@ body {
   top: 0;
   left: 0;
   background-color: white;
-  width: 200px;
+  width: 170px;
   color: black;
   border: 2px solid black;
   font-size: 16px;
   line-height: 2em;
   padding-left: 12px;
   height: 34px;
+}
+#wrapper #faceInfo .puzzleDate {
+  float: right;
+  padding-right: 8px;
 }
 #wrapper #threeDspace {
   width: 510px;

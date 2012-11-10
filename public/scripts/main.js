@@ -115,7 +115,7 @@ function getWord(square, direction){
 }
 // on load of page
 $(function(){
-	$('#faceInfo').html('<strong>FRONT</strong>');
+	$('#faceInfo').html('<strong>FRONT</strong> ' + '<span class="puzzleDate">00/00/00</span>');
 	// when the client clicks SEND
 	$('#datasend').click( function() {
 		var message = $('#data').val();
