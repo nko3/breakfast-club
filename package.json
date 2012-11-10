@@ -1,10 +1,10 @@
 {
   "name": "nko3-breakfast-club",
-  "version": "0.0.0",
+  "version": "0.0.0-11",
   "description": "Breakfast Club",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node app"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "express": "3.0.0rc5",
+    "mongoose" : "3.2.0",
     "ejs": "*",
     "less-middleware": "*",
     "socket.io": "0.9"

@@ -9,7 +9,7 @@
     <body>
         <div class="topBar">
           <img id="lexiLogo" src="images/logo.png" />
-          <!--<iframe id="nodeVote" src="http://nodeknockout.com/iframe/breakfast-club" frameborder="0" scrolling="no" allowtransparency="true" width="115" height="25"></iframe>-->
+          <iframe id="nodeVote" src="http://nodeknockout.com/iframe/breakfast-club" frameborder="0" scrolling="no" allowtransparency="true" width="115" height="25"></iframe>
         </div>
         
         <div id="wrapper">
@@ -57,6 +57,7 @@
         <script src="http://localhost:3001/socket.io/socket.io.js"></script>
        	<script>
 			var socket = io.connect('http://localhost:3001');
+			var grid = [];
 
 			// on connection to server, ask for user's name with an anonymous callback
 			socket.on('connect', function(){
@@ -77,6 +78,21 @@
 				});
 			});
 
+			socket.on('updategrid', function(data) {
+				$('#front').empty();
+				grid = data.grid;
+				console.log(grid);
+
+				for (i=0; i < grid.length; i++) {
+					if (grid[i].active === "active") {
+						$('#front').append('<div class="square">' + grid[i].letter + '</div>');
+					}
+					else {
+						$('#front').append('<div class="square black"></div>');
+					}
+				}
+			});
+
 			// on load of page
 			$(function(){
 				// when the client clicks SEND
@@ -95,7 +111,6 @@
 					}
 				});
 			});
-
 		</script>
     </body>
 </html>
