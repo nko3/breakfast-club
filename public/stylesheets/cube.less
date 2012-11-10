@@ -60,11 +60,10 @@ body {
 }
 
 #wrapper {
-
 	width: 700px;
 	height:700px;
-	margin: 20px auto;
-	border:1px solid #09ABDA;
+	margin: 20px;
+	border:1px solid transparent;
 	position:relative;
 
 	#flipRight, #flipLeft, #flipUp, #flipDown {
@@ -94,6 +93,29 @@ body {
 	#flipDown {
 		left:325px;
 		bottom:0;
+	}
+}
+
+#chat-window {
+	position: absolute;
+	top: 140px;
+	right: 60px;
+	color: white;
+
+	.user-list {
+		float:left;
+		width:100px;
+		border-right:1px solid white;
+		height:300px;
+		padding:10px;
+		overflow:scroll-y;
+	}
+	.chat {
+		float:left;
+		width:300px;
+		height:250px;
+		overflow:scroll-y;
+		padding:10px;
 	}
 }
 
