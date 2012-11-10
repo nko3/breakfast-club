@@ -39,12 +39,23 @@
 #cube.show-top   { .rotate(rotateX(-90deg)); }
 #cube.show-bottom{ .rotate(rotateX(90deg)); }
 
+
+
+.unselectable {
+   -moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+}
+
 //BODY STYLES
 body {
 	background: url(../images/bg.png) #09ABDA;
 	margin:0;
 	padding:25px;
 	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	min-width:1280px;
 }
 
 * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;}
@@ -67,6 +78,25 @@ body {
 	margin: 20px auto;
 	position:relative;
 
+	#faceInfo {
+		position:absolute;
+		top:0;
+		left:0;
+		background-color:white;
+		width:170px;
+		color:black;
+		border:2px solid black;
+		font-size:16px;
+		line-height:2em;
+		padding-left:12px;
+		height:34px;
+
+		.puzzleDate {
+			float:right;
+			padding-right:8px;
+		}
+	}
+
 	#threeDspace {
 		width: 510px;
 		height: 510px;
@@ -86,10 +116,11 @@ body {
 		font-size:3em;
 		text-shadow:2px 2px #000;
 		color:#FFF;
-		transition: all 0.5s;
+		-webkit-transition: color 0.5s;
+		transition: color 0.5s;
 
 		&:hover,&:focus,&:active {
-			color: #AAA;
+			color: #bbe;
 		}
 	}
 	#flipRight {
@@ -185,7 +216,7 @@ body {
 		display: block;
 		position: absolute;
 		border: 1px solid black;
-		background-color: white;
+		background-color: black;
 		font-size:6em;	
 		color:#000;
 		text-shadow:none;
@@ -195,6 +226,7 @@ body {
 			width: 34px;
 			height: 34px;
 			border: 1px solid black;
+			background-color:white;
 			float:left;
 			overflow:hidden;
 			font-size:32px;
@@ -202,7 +234,9 @@ body {
 			text-align:center;
 			text-transform:uppercase;
 			&.black {background-color:black;}
-			&.selected {background-color:#bbe;}
+			&.selected {background-color:#bbe; }
+			.unselectable;
+			cursor:pointer;
 
 			.clueNum {
 				position: absolute;

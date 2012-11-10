@@ -89,11 +89,19 @@
   -o-transform: translateZ(-255px) rotateX(90deg);
   transform: translateZ(-255px) rotateX(90deg);
 }
+.unselectable {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 body {
   background: url(../images/bg.png) #09abda;
   margin: 0;
   padding: 25px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  min-width: 1280px;
 }
 * {
   -moz-box-sizing: border-box;
@@ -118,6 +126,23 @@ body {
   margin: 20px auto;
   position: relative;
 }
+#wrapper #faceInfo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: white;
+  width: 170px;
+  color: black;
+  border: 2px solid black;
+  font-size: 16px;
+  line-height: 2em;
+  padding-left: 12px;
+  height: 34px;
+}
+#wrapper #faceInfo .puzzleDate {
+  float: right;
+  padding-right: 8px;
+}
 #wrapper #threeDspace {
   width: 510px;
   height: 510px;
@@ -139,7 +164,8 @@ body {
   font-size: 3em;
   text-shadow: 2px 2px #000;
   color: #FFF;
-  transition: all 0.5s;
+  -webkit-transition: color 0.5s;
+  transition: color 0.5s;
 }
 #wrapper #flipRight:hover,
 #wrapper #flipLeft:hover,
@@ -153,7 +179,7 @@ body {
 #wrapper #flipLeft:active,
 #wrapper #flipUp:active,
 #wrapper #flipDown:active {
-  color: #AAA;
+  color: #bbe;
 }
 #wrapper #flipRight {
   left: 590px;
@@ -243,7 +269,7 @@ body {
   display: block;
   position: absolute;
   border: 1px solid black;
-  background-color: white;
+  background-color: black;
   font-size: 6em;
   color: #000;
   text-shadow: none;
@@ -253,12 +279,19 @@ body {
   width: 34px;
   height: 34px;
   border: 1px solid black;
+  background-color: white;
   float: left;
   overflow: hidden;
   font-size: 32px;
   line-height: 1em;
   text-align: center;
   text-transform: uppercase;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
 }
 #cube .face .square.black {
   background-color: black;
