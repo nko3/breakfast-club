@@ -41,11 +41,13 @@
 
 //BODY STYLES
 body {
-	background-color: #09ABDA;
-	box-sizing:border-box;
+	background: url(../images/bg.png) #09ABDA;
 	margin:0;
-	padding:0;
+	padding:25px;
+	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+
+* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;}
 
 .topBar {
 	width:100%;
@@ -98,24 +100,36 @@ body {
 
 #chat-window {
 	position: absolute;
-	top: 140px;
+	top: 136px;
 	right: 60px;
-	color: white;
+	color: black;
+	background-color:white;
+	height:510px;
+	border: 2px solid black;
+	width:400px;
 
 	.user-list {
 		float:left;
-		width:100px;
-		border-right:1px solid white;
-		height:300px;
+		width:25%;
+		border-right:2px solid black;
 		padding:10px;
 		overflow:scroll-y;
+		height:455px;
 	}
 	.chat {
 		float:left;
-		width:300px;
-		height:250px;
+		width:75%;
 		overflow:scroll-y;
+		height:455px;
 		padding:10px;
+	}
+	#input {
+		float:left;
+		width: 100%;
+		border-top:2px solid black;
+		overflow:none;
+		padding:10px;
+		clear:left;
 	}
 }
 
@@ -148,8 +162,8 @@ body {
     transition: transform 1.2s;
 
   	.face {
-		width: 510px;
-		height: 510px;
+		width: 512px;
+		height: 512px;
 		display: block;
 		position: absolute;
 		border: 1px solid black;
@@ -159,8 +173,8 @@ body {
 		text-shadow:none;
 
 		.square {
-			width: 32px;
-			height: 32px;
+			width: 34px;
+			height: 34px;
 			border: 1px solid black;
 			float:left;
 			overflow:hidden;
