@@ -160,6 +160,12 @@ body {
   left: 325px;
   bottom: 0;
 }
+#clue {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  height: 34px;
+}
 #chat-window {
   position: absolute;
   top: 136px;
@@ -234,6 +240,7 @@ body {
   text-shadow: none;
 }
 #cube .face .square {
+  position: relative;
   width: 34px;
   height: 34px;
   border: 1px solid black;
@@ -249,6 +256,12 @@ body {
 }
 #cube .face .square.selected {
   background-color: #bbe;
+}
+#cube .face .square .clueNum {
+  position: absolute;
+  top: -8px;
+  left: 2px;
+  font-size: 9px;
 }
 #show-buttons {
   margin-top: 120px;
