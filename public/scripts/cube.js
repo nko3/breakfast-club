@@ -53,6 +53,7 @@ var flipCube = function(direction) {
 	var currentSide = cube.attr('class') || 'show-front';
 	var flipTo = findAdjacentSide(currentSide,direction);
 	cube.removeClass(currentSide).addClass(flipTo);
+	$('#faceInfo').html('<strong>' + flipTo.substring(5).toUpperCase() + '</strong>');
 };
 
 $('#flipRight').click(function() {flipCube('right');});

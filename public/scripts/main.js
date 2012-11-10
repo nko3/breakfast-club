@@ -110,6 +110,7 @@ function getWord(square, direction){
 }
 // on load of page
 $(function(){
+	$('#faceInfo').html('<strong>FRONT</strong>');
 	// when the client clicks SEND
 	$('#datasend').click( function() {
 		var message = $('#data').val();

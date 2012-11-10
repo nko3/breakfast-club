@@ -118,6 +118,19 @@ body {
   margin: 20px auto;
   position: relative;
 }
+#wrapper #faceInfo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: white;
+  width: 200px;
+  color: black;
+  border: 2px solid black;
+  font-size: 16px;
+  line-height: 2em;
+  padding-left: 12px;
+  height: 34px;
+}
 #wrapper #threeDspace {
   width: 510px;
   height: 510px;

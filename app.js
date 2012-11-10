@@ -137,8 +137,10 @@ var buildGrid = function(obj, gameID) {
   grids.push(crossword);
 };
 
+var usedPuzzles = [];
+
 // Get a random crossword from xwordinfo
-var getPuzzle = function(gameID) {
+var getPuzzle = function(gameID, usedPuzzles) {
   http.get("http://www.xwordinfo.com/JSON/Data.aspx?date=random", function(res) {
     console.log("Got response: " + res.statusCode);
     var data = '';
@@ -150,24 +152,32 @@ var getPuzzle = function(gameID) {
     res.on('end',function(){
         var obj = JSON.parse(data);
         //console.log(obj);
-        if (obj.size.rows === 15) {
-          console.log('its good');
-          buildGrid(obj, gameID);
+        if (obj.size.rows === 15 
+          && usedPuzzles['front'] != obj.date
+          && usedPuzzles['back'] != obj.date
+          && usedPuzzles['left'] != obj.date
+          && usedPuzzles['right'] != obj.date
+          && usedPuzzles['top'] != obj.date
+          && usedPuzzles['bottom'] != obj.date ) {
+            console.log('its good');
+            buildGrid(obj, gameID);
+            usedPuzzles[gameID] = obj.date;
+            console.log('face ' + gameID + ' is using puzzle ' + usedPuzzles[gameID]);
         }
         else {
           console.log('no good');
-          getPuzzle(gameID);
+          getPuzzle(gameID, usedPuzzles);
         }
     });
   });
 };
 
-getPuzzle('front');
-getPuzzle('back');
-getPuzzle('left');
-getPuzzle('right');
-getPuzzle('top');
-getPuzzle('bottom');
+getPuzzle('front', usedPuzzles);
+getPuzzle('back', usedPuzzles);
+getPuzzle('left', usedPuzzles);
+getPuzzle('right', usedPuzzles);
+getPuzzle('top', usedPuzzles);
+getPuzzle('bottom', usedPuzzles);
 
 app.get('/', routes.index);
 app.get('/users', user.list);
