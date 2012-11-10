@@ -79,16 +79,16 @@
 			});
 
 			socket.on('updategrid', function(data) {
-				$('#front').empty();
+				$('#' + data.gameID).empty();
 				grid = data.grid;
 				console.log(grid);
 
 				for (i=0; i < grid.length; i++) {
 					if (grid[i].active === "active") {
-						$('#front').append('<div class="square">' + grid[i].letter + '</div>');
+						$('#' + data.gameID).append('<div class="square">' + grid[i].letter + '</div>');
 					}
 					else {
-						$('#front').append('<div class="square black"></div>');
+						$('#' + data.gameID).append('<div class="square black"></div>');
 					}
 				}
 			});

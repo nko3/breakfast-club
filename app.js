@@ -37,11 +37,11 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-var grid = [];
+var grids = [];
 
 ////////// Server only logic //////////
 var buildGrid = function(obj, gameID) {
-    
+    var grid = [];
     // Create empty array for guessed words
     var gridGuessed = [];
     for (i=0; i < 225; i++){
@@ -120,7 +120,10 @@ var buildGrid = function(obj, gameID) {
     grid.push(item);
   }
 
+  console.log('Game loaded for: ' + gameID);
+
   grid = {
+    gameID: gameID,
     answers: obj.answers,
     grid: grid,
     guessed: gridGuessed,
@@ -129,10 +132,8 @@ var buildGrid = function(obj, gameID) {
     down: obj.clues.down
   };
 
-  io.sockets.emit('updategrid', grid);
+  grids.push(grid);
 };
-
-var gameID = 12345678;
 
 // Get a random crossword from xwordinfo
 var getPuzzle = function(gameID) {
@@ -146,20 +147,25 @@ var getPuzzle = function(gameID) {
 
     res.on('end',function(){
         var obj = JSON.parse(data);
-        console.log(obj);
+        //console.log(obj);
         if (obj.size.rows === 15) {
           console.log('its good');
           buildGrid(obj, gameID);
         }
         else {
           console.log('no good');
-          getPuzzle();
+          getPuzzle(gameID);
         }
     });
   });
 };
 
-getPuzzle(gameID);
+getPuzzle('front');
+getPuzzle('back');
+getPuzzle('left');
+getPuzzle('right');
+getPuzzle('top');
+getPuzzle('bottom');
 
 app.get('/', routes.index);
 app.get('/users', user.list);
@@ -193,7 +199,9 @@ io.sockets.on('connection', function (socket) {
     // update the list of users in chat, client-side
     io.sockets.emit('updateusers', usernames);
 
-    io.sockets.emit('updategrid', grid);
+    for (i=0; i < grids.length; i++) {
+      io.sockets.emit('updategrid', grids[i]);
+    }
   });
 
   // when the user disconnects.. perform this
