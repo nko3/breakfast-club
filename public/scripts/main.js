@@ -46,11 +46,18 @@ socket.on('updateletter', function(data) {
 
 socket.on('guessresults', function(data) {
 	if (data.result === 'incorrect') {
+		var firstSquare = $('#' + data.data.side + ' .square[data-grid-index="' + data.data.firstSquare + '"]').first();
+		var word = getWord(firstSquare, data.data.direction);
+		for (var i in word.squares){
+			var square = word.squares[i];
+			$(square).find('.letter:not(.correctWord)').html('');
+		}
+	} else {
 		var firstSquare = $('.square[data-grid-index="' + data.data.firstSquare + '"]').first();
 		var word = getWord(firstSquare, data.data.direction);
 		for (var i in word.squares){
 			var square = word.squares[i];
-			$(square).find('.letter').html('');
+			$(square).find('.letter').addClass('correctWord');
 		}
 	}
 	alert(data.result);
@@ -161,9 +168,15 @@ $(function(){
 	});
 	
 	$(document).keypress(function(e){
-		if (currentWord.done){
+		//if chat input has focus or the word is done, quit
+		if ( $('#data').is(":focus") || currentWord.done){
 			return;
 		}
+		//backspace - delete last letter that's not empty or part of a correct word
+		if(e.which == 8) {
+			$(currentWord.squares).find('.letter').not(':empty').not('.correctWord').last().html('');
+		}
+		//letter
 		var letter = String.fromCharCode(e.which);
 		letter = letter.match(/[A-Za-z]/);
 		var box = false;

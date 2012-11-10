@@ -305,6 +305,9 @@ body {
   left: 2px;
   font-size: 9px;
 }
+#cube .face .square .correctWord {
+  color: green;
+}
 #show-buttons {
   display: none;
   margin-top: 120px;
