@@ -1,0 +1,213 @@
+@import 'general_foundicons.css';
+/*
+ *	
+ *	Cube rotation CSS is a modified version of David DeSandro's:
+ *	http://desandro.github.com/3dtransforms/docs/cube.html
+ *
+ */
+#front {
+  -webkit-transform: rotateY(0deg) translateZ(255px);
+  -moz-transform: rotateY(0deg) translateZ(255px);
+  -ms-transform: rotateY(0deg) translateZ(255px);
+  -o-transform: rotateY(0deg) translateZ(255px);
+  transform: rotateY(0deg) translateZ(255px);
+}
+#back {
+  -webkit-transform: rotateX(180deg) translateZ(255px);
+  -moz-transform: rotateX(180deg) translateZ(255px);
+  -ms-transform: rotateX(180deg) translateZ(255px);
+  -o-transform: rotateX(180deg) translateZ(255px);
+  transform: rotateX(180deg) translateZ(255px);
+}
+#right {
+  -webkit-transform: rotateY(90deg) translateZ(255px);
+  -moz-transform: rotateY(90deg) translateZ(255px);
+  -ms-transform: rotateY(90deg) translateZ(255px);
+  -o-transform: rotateY(90deg) translateZ(255px);
+  transform: rotateY(90deg) translateZ(255px);
+}
+#left {
+  -webkit-transform: rotateY(-90deg) translateZ(255px);
+  -moz-transform: rotateY(-90deg) translateZ(255px);
+  -ms-transform: rotateY(-90deg) translateZ(255px);
+  -o-transform: rotateY(-90deg) translateZ(255px);
+  transform: rotateY(-90deg) translateZ(255px);
+}
+#top {
+  -webkit-transform: rotateX(90deg) translateZ(255px);
+  -moz-transform: rotateX(90deg) translateZ(255px);
+  -ms-transform: rotateX(90deg) translateZ(255px);
+  -o-transform: rotateX(90deg) translateZ(255px);
+  transform: rotateX(90deg) translateZ(255px);
+}
+#bottom {
+  -webkit-transform: rotateX(-90deg) translateZ(255px);
+  -moz-transform: rotateX(-90deg) translateZ(255px);
+  -ms-transform: rotateX(-90deg) translateZ(255px);
+  -o-transform: rotateX(-90deg) translateZ(255px);
+  transform: rotateX(-90deg) translateZ(255px);
+}
+#cube.show-front {
+  -webkit-transform: translateZ(-255px) rotateY(0deg);
+  -moz-transform: translateZ(-255px) rotateY(0deg);
+  -ms-transform: translateZ(-255px) rotateY(0deg);
+  -o-transform: translateZ(-255px) rotateY(0deg);
+  transform: translateZ(-255px) rotateY(0deg);
+}
+#cube.show-back {
+  -webkit-transform: translateZ(-255px) rotateX(-180deg);
+  -moz-transform: translateZ(-255px) rotateX(-180deg);
+  -ms-transform: translateZ(-255px) rotateX(-180deg);
+  -o-transform: translateZ(-255px) rotateX(-180deg);
+  transform: translateZ(-255px) rotateX(-180deg);
+}
+#cube.show-right {
+  -webkit-transform: translateZ(-255px) rotateY(-90deg);
+  -moz-transform: translateZ(-255px) rotateY(-90deg);
+  -ms-transform: translateZ(-255px) rotateY(-90deg);
+  -o-transform: translateZ(-255px) rotateY(-90deg);
+  transform: translateZ(-255px) rotateY(-90deg);
+}
+#cube.show-left {
+  -webkit-transform: translateZ(-255px) rotateY(90deg);
+  -moz-transform: translateZ(-255px) rotateY(90deg);
+  -ms-transform: translateZ(-255px) rotateY(90deg);
+  -o-transform: translateZ(-255px) rotateY(90deg);
+  transform: translateZ(-255px) rotateY(90deg);
+}
+#cube.show-top {
+  -webkit-transform: translateZ(-255px) rotateX(-90deg);
+  -moz-transform: translateZ(-255px) rotateX(-90deg);
+  -ms-transform: translateZ(-255px) rotateX(-90deg);
+  -o-transform: translateZ(-255px) rotateX(-90deg);
+  transform: translateZ(-255px) rotateX(-90deg);
+}
+#cube.show-bottom {
+  -webkit-transform: translateZ(-255px) rotateX(90deg);
+  -moz-transform: translateZ(-255px) rotateX(90deg);
+  -ms-transform: translateZ(-255px) rotateX(90deg);
+  -o-transform: translateZ(-255px) rotateX(90deg);
+  transform: translateZ(-255px) rotateX(90deg);
+}
+body {
+  background-color: #09ABDA;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+.topBar {
+  width: 100%;
+  padding-left: 1em;
+}
+#lexiLogo,
+#nodeVote {
+  float: left;
+}
+#nodeVote {
+  clear: left;
+  margin-top: 12px;
+}
+#wrapper {
+  width: 700px;
+  height: 700px;
+  margin: 20px auto;
+  border: 1px solid #09ABDA;
+  position: relative;
+}
+#wrapper #flipRight,
+#wrapper #flipLeft,
+#wrapper #flipUp,
+#wrapper #flipDown {
+  position: absolute;
+  cursor: pointer;
+  font-size: 3em;
+  text-shadow: 2px 2px #000;
+  color: #FFF;
+  transition: all 0.5s;
+}
+#wrapper #flipRight:hover,
+#wrapper #flipLeft:hover,
+#wrapper #flipUp:hover,
+#wrapper #flipDown:hover,
+#wrapper #flipRight:focus,
+#wrapper #flipLeft:focus,
+#wrapper #flipUp:focus,
+#wrapper #flipDown:focus,
+#wrapper #flipRight:active,
+#wrapper #flipLeft:active,
+#wrapper #flipUp:active,
+#wrapper #flipDown:active {
+  color: #AAA;
+}
+#wrapper #flipRight {
+  right: 0;
+  top: 325px;
+}
+#wrapper #flipLeft {
+  left: 0;
+  top: 325px;
+}
+#wrapper #flipUp {
+  left: 325px;
+  top: 0;
+}
+#wrapper #flipDown {
+  left: 325px;
+  bottom: 0;
+}
+#threeDspace {
+  width: 510px;
+  height: 510px;
+  position: relative;
+  margin: 90px auto;
+  -webkit-perspective: 1000px;
+  -moz-perspective: 1000px;
+  -o-perspective: 1000px;
+  perspective: 1000px;
+}
+#cube {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  -webkit-transform: translateZ(-255px);
+  -moz-transform: translateZ(-255px);
+  -o-transform: translateZ(-255px);
+  transform: translateZ(-255px);
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transition: -webkit-transform 1.2s;
+  -moz-transition: -moz-transform 1.2s;
+  -o-transition: -o-transform 1.2s;
+  transition: transform 1.2s;
+}
+#cube .face {
+  width: 510px;
+  height: 510px;
+  display: block;
+  position: absolute;
+  border: 1px solid black;
+  background-color: white;
+  font-size: 6em;
+  color: #000;
+  text-shadow: none;
+}
+#cube .face .square {
+  width: 32px;
+  height: 32px;
+  border: 1px solid black;
+  float: left;
+  overflow: hidden;
+  font-size: 32px;
+  line-height: 1em;
+  text-align: center;
+  text-transform: uppercase;
+}
+#cube .face .square.black {
+  background-color: black;
+}
+#show-buttons {
+  margin-top: 120px;
+  clear: left;
+}
