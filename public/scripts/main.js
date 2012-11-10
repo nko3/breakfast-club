@@ -41,7 +41,7 @@ socket.on('updategrid', function(data) {
 });
 
 socket.on('updateletter', function(data) {
-	$('#' + data.side + ' .square[data-grid-index="' + data.index + '"]').html(data.letter);
+	$('#' + data.side + ' .square[data-grid-index="' + data.index + '"] .letter').html(data.letter);
 });
 
 socket.on('guessresults', function(data) {
@@ -53,7 +53,7 @@ socket.on('guessresults', function(data) {
 			$(square).find('.letter:not(.correctWord)').html('');
 		}
 	} else {
-		var firstSquare = $('.square[data-grid-index="' + data.data.firstSquare + '"]').first();
+		var firstSquare = $('#' + data.data.side + ' .square[data-grid-index="' + data.data.firstSquare + '"]').first();
 		var word = getWord(firstSquare, data.data.direction);
 		for (var i in word.squares){
 			var square = word.squares[i];
