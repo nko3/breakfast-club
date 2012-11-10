@@ -32,12 +32,16 @@ socket.on('updategrid', function(data) {
 	for (i=0; i < grid.length; i++) {
 		if (grid[i].active === "active") {
 			var clue = (data.gridnums[i] != '0') ? '<span class="clueNum">' + data.gridnums[i] + '</span>' : '';
-			$('#' + data.gameID).append('<div class="square">' + clue + '</div>');
+			$('#' + data.gameID).append('<div class="square" data-grid-index=' + i + '>' + clue + '<span class="letter"></span></div>');
 		}
 		else {
 			$('#' + data.gameID).append('<div class="square black"></div>');
 		}
 	}
+});
+
+socket.on('updateletter', function(data) {
+	$('#' + data.side + ' .square[data-grid-index="' + data.index + '"]').html(data.letter);
 });
 
 function getClue(clues, num){
@@ -129,7 +133,7 @@ $(function(){
 			$('#datasend').focus().click();
 		}
 	});
-	$(document).keypress(function(e){
+		$(document).keypress(function(e){
 		if (currentWord.done){
 			return;
 		}
@@ -138,7 +142,7 @@ $(function(){
 		var box = false;
 		for (var i in currentWord.squares){
 			var square = currentWord.squares[i];
-			if ($(square).find('.letter').length > 0){
+			if ($(square).find('.letter').html() !== ''){
 				continue;
 			}
 			box = square;
@@ -149,9 +153,10 @@ $(function(){
 
 			return;
 		}
-		socket.emit('sendletter', {letter:letter, index:$(box).index()});
-		$(box).append('<span class="letter">'+letter+"</span>");
+		socket.emit('sendletter', {letter:letter, index:$(box).attr('data-grid-index'), side: $(box).closest('.face').attr('id')});
+		$(box).find('.letter').html(letter);
 	});
+
 	$(document).on('click', '.square', function(){
 		var direction = ($('.selected').hasClass('vertical')) ? 'vertical' : 'horizontal';
 		
