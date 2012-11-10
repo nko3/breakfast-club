@@ -228,6 +228,9 @@ body {
 #cube .face .square.black {
   background-color: black;
 }
+#cube .face .square.selected {
+  border-color: #4444aa;
+}
 #show-buttons {
   margin-top: 120px;
   clear: left;
