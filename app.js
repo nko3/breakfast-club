@@ -39,7 +39,8 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-var grids = [];
+var serverCrosswords = [];
+var clientCrosswords = [];
 
 ////////// Server only logic //////////
 var buildGrid = function(obj, gameID) {
@@ -124,7 +125,16 @@ var buildGrid = function(obj, gameID) {
 
   console.log('Game loaded for: ' + gameID);
 
-  crossword = {
+  clientCrossword = {
+    gameID: gameID,
+    grid: grid,
+    guessed: gridGuessed,
+    gridnums: obj.gridnums,
+    across: obj.clues.across,
+    down: obj.clues.down
+  };
+
+  serverCrossword = {
     gameID: gameID,
     answers: obj.answers,
     grid: grid,
@@ -134,7 +144,8 @@ var buildGrid = function(obj, gameID) {
     down: obj.clues.down
   };
 
-  grids.push(crossword);
+  clientCrosswords.push(clientCrossword);
+  serverCrosswords.push(serverCrossword);
 };
 
 var usedPuzzles = [];
@@ -194,12 +205,12 @@ var usernames = {};
 var SessionSockets = require('session.socket.io')
   , sessionSockets = new SessionSockets(io, sessionStore, cookieParser);
 
-sessionSockets.on('connection', function (socket) {
-  console.log('session user');
+sessionSockets.on('connection', function (err, socket, session) {
+  console.log("Session: ");
+  console.log(socket);
 });
 
 io.sockets.on('connection', function (socket) {
-  
   // when the client emits 'sendchat', this listens and executes
   socket.on('sendchat', function (data) {
     // we tell the client to execute 'updatechat' with 2 parameters
@@ -219,9 +230,19 @@ io.sockets.on('connection', function (socket) {
     // update the list of users in chat, client-side
     io.sockets.emit('updateusers', usernames);
 
-    for (i=0; i < grids.length; i++) {
-      io.sockets.emit('updategrid', grids[i]);
+    for (i=0; i < clientCrosswords.length; i++) {
+      io.sockets.emit('updategrid', clientCrosswords[i]);
     }
+  });
+
+  socket.on('checkword', function (data) {
+    //if (data)
+      //socket.broadcast.emit('updategrid', username + ' has connected');
+  });
+
+  socket.on('sendletter', function (data) {
+    console.log('letter sent.');
+    socket.broadcast.emit('updateletter', data);
   });
 
   // when the user disconnects.. perform this
