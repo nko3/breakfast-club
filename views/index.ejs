@@ -190,10 +190,13 @@
 					}
 				});
 				$(document).on('click', '.square', function(){
-					var direction = 'horizontal';
+					var direction = ($('.selected').hasClass('vertical')) ? 'vertical' : 'horizontal';
+					
 					if ($(this).hasClass('selected')){
 						if ($(this).hasClass('horizontal')){
 							direction = 'vertical';
+						} else {
+							direction = 'horizontal';
 						}
 					}
 					$('.selected').removeClass('selected');
