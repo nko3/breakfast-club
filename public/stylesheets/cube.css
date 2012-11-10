@@ -113,11 +113,22 @@ body {
   margin-top: 12px;
 }
 #wrapper {
-  width: 700px;
+  width: 1000px;
   height: 700px;
-  margin: 20px;
-  border: 1px solid transparent;
+  margin: 20px auto;
   position: relative;
+}
+#wrapper #threeDspace {
+  width: 510px;
+  height: 510px;
+  position: absolute;
+  top: 65px;
+  left: 60px;
+  float: left;
+  -webkit-perspective: 1000px;
+  -moz-perspective: 1000px;
+  -o-perspective: 1000px;
+  perspective: 1000px;
 }
 #wrapper #flipRight,
 #wrapper #flipLeft,
@@ -145,52 +156,60 @@ body {
   color: #AAA;
 }
 #wrapper #flipRight {
-  right: 0;
-  top: 325px;
+  left: 590px;
+  top: 290px;
 }
 #wrapper #flipLeft {
   left: 0;
-  top: 325px;
+  top: 290px;
 }
 #wrapper #flipUp {
-  left: 325px;
+  left: 290px;
   top: 0;
 }
 #wrapper #flipDown {
-  left: 325px;
-  bottom: 0;
+  left: 290px;
+  top: 590px;
 }
 #clue {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  float: left;
+  width: 640px;
   background-color: white;
   color: black;
   border: 2px solid black;
+  font-size: 16px;
+  line-height: 2em;
+  padding-left: 12px;
   height: 34px;
 }
 #chat-window {
   position: absolute;
-  top: 136px;
-  right: 60px;
+  top: 0;
+  right: 0;
   color: black;
   background-color: white;
-  height: 510px;
+  height: 700px;
   border: 2px solid black;
-  width: 400px;
+  width: 320px;
 }
 #chat-window .user-list {
   float: left;
-  width: 25%;
-  border-right: 2px solid black;
+  width: 100%;
+  border-bottom: 2px solid black;
   padding: 10px;
   overflow-y: auto;
   overflow-x: hidden;
-  height: 455px;
+  height: 140px;
 }
 #chat-window #conversation {
   float: left;
-  width: 75%;
+  width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  height: 455px;
+  height: 510px;
   padding: 10px;
 }
 #chat-window #input {
@@ -200,16 +219,6 @@ body {
   overflow: none;
   padding: 10px;
   clear: left;
-}
-#threeDspace {
-  width: 510px;
-  height: 510px;
-  position: relative;
-  margin: 90px auto;
-  -webkit-perspective: 1000px;
-  -moz-perspective: 1000px;
-  -o-perspective: 1000px;
-  perspective: 1000px;
 }
 #cube {
   width: 100%;
@@ -264,6 +273,7 @@ body {
   font-size: 9px;
 }
 #show-buttons {
+  display: none;
   margin-top: 120px;
   clear: left;
 }
