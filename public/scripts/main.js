@@ -44,6 +44,18 @@ socket.on('updateletter', function(data) {
 	$('#' + data.side + ' .square[data-grid-index="' + data.index + '"]').html(data.letter);
 });
 
+socket.on('guessresults', function(data) {
+	if (data.result === 'incorrect') {
+		var firstSquare = $('.square[data-grid-index="' + data.data.firstSquare + '"]').first();
+		var word = getWord(firstSquare, data.data.direction);
+		for (var i in word.squares){
+			var square = word.squares[i];
+			$(square).find('.letter').html('');
+		}
+	}
+	alert(data.result);
+});
+
 function getClue(clues, num){
 	console.log(num);
 	for (var i in clues){
@@ -51,6 +63,17 @@ function getClue(clues, num){
 		console.log(clues[i]);
 		if (n == num){
 			return clues[i];
+		}
+	}
+}
+
+function getWordIndex(clues, num){
+	console.log(num);
+	for (var i in clues){
+		var n = parseInt(clues[i].split('.')[0]);
+		console.log(clues[i]);
+		if (n == num){
+			return i;
 		}
 	}
 }
@@ -88,6 +111,7 @@ function getWord(square, direction){
 			}
 		}
 		word.clue = getClue(data.down, data.gridnums[start]);
+		word.index = getWordIndex(data.down, data.gridnums[start]);
 	}else {
 		var place = index % 15;
 		var min = index - place;
@@ -109,6 +133,7 @@ function getWord(square, direction){
 			}
 		}
 		word.clue = getClue(data.across, data.gridnums[start]);
+		word.index = getWordIndex(data.across, data.gridnums[start]);
 	}
 	console.log(word);
 	return word;
@@ -133,7 +158,8 @@ $(function(){
 			$('#datasend').focus().click();
 		}
 	});
-		$(document).keypress(function(e){
+	
+	$(document).keypress(function(e){
 		if (currentWord.done){
 			return;
 		}
@@ -150,10 +176,14 @@ $(function(){
 		}
 		if (!box){
 			currentWord.done = true;
-
+			var word = '';
+			for (var i in currentWord.squares){
+				word += $(currentWord.squares[i]).find('.letter').html();
+			}
+			socket.emit('checkword', { guess: word, index: currentWord.index, direction: currentWord.direction, side: $(currentWord.squares[0]).closest('.face').attr('id'), firstSquare: $(currentWord.squares[0]).attr('data-grid-index') });
 			return;
 		}
-		socket.emit('sendletter', {letter:letter, index:$(box).attr('data-grid-index'), side: $(box).closest('.face').attr('id')});
+		socket.emit('sendletter', {letter:letter, index:$(box).attr('data-grid-index'), side: $(box).closest('.face').attr('id') });
 		$(box).find('.letter').html(letter);
 	});
 
@@ -177,6 +207,8 @@ $(function(){
 		var clueDir = (direction === 'vertical') ? 'DOWN' : 'ACROSS';
 		$('#clue').html('<strong>' + clueDir + '</strong> ' + word.clue);
 		$(word.squares).addClass('selected').addClass(direction);
+		word.direction = direction;
+
 		currentWord = word;
 	});
 });

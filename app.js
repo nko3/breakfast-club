@@ -173,6 +173,14 @@ var getPuzzle = function(gameID) {
   });
 };
 
+var findSideByID = function(id) {
+  for (var i = 0; i < serverCrosswords.length; i++) {
+    if (serverCrosswords[i].gameID === id) {
+      return serverCrosswords[i];
+    }
+  }
+};
+
 getPuzzle('front');
 getPuzzle('back');
 getPuzzle('left');
@@ -226,8 +234,26 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('checkword', function (data) {
-    //if (data)
-      //socket.broadcast.emit('updategrid', username + ' has connected');
+    console.log(data);
+    var crossword = findSideByID(data.side);
+    var result = '';
+    if (data.direction === 'horizontal') {
+      if (data.guess.toUpperCase() === crossword.answers.across[data.index]) {
+        result = 'correct';
+      }
+      else {
+        result = 'incorrect';
+      }
+    }
+    else if (data.direction === 'vertical') {
+      if (data.guess.toUpperCase() === crossword.answers.down[data.index]) {
+        result = 'correct';
+      }
+      else {
+        result = 'incorrect';
+      }
+    }
+    io.sockets.emit('guessresults', {data: data, result: result});
   });
 
   socket.on('sendletter', function (data) {
