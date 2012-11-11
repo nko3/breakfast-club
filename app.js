@@ -293,6 +293,10 @@ var findSideByID = function(id) {
 };
 
 function findIndexByClue(crossword, clue){
+  console.log(clue);
+  if (!clue){
+    return false;
+  }
   var clueid = parseInt(clue.split('.')[0]);
   return crossword.gridnums.indexOf(clueid);
 }
@@ -367,6 +371,11 @@ function checkWord(data){
     if (data.guess.toUpperCase() === crossword.answers.across[data.index]) {
       var userDidFinish = false;
       var i = findIndexByClue(crossword, crossword.across[data.index]);
+      if (i=== false) {
+        console.log('THIS SHOULD NEVER HAPPEN1');;
+        console.log(data);
+        return;
+      }
       for (var l = data.guess.length+i; i < l; i++){
         if (crossword.correct[i] == 0){
           crossword.correct[i] = 1;
@@ -383,6 +392,11 @@ function checkWord(data){
     else {
       result = 'incorrect';
       var i = findIndexByClue(crossword, crossword.across[data.index]);
+      if (i=== false) {
+        console.log('THIS SHOULD NEVER HAPPEN2');;
+        console.log(data);
+        return;
+      }
       for (var l = data.guess.length+i; i < l; i++){
         if (crossword.correct[i] !== 1){
           crossword.guessed[i] = '';
@@ -394,6 +408,11 @@ function checkWord(data){
     if (data.guess.toUpperCase() === crossword.answers.down[data.index]) {
       var userDidFinish = false;
       var i = findIndexByClue(crossword, crossword.down[data.index]);
+      if (i=== false) {
+        console.log('THIS SHOULD NEVER HAPPEN3');;
+        console.log(data);
+        return;
+      }
       for (var l = data.guess.length*15+i; i < l; i+=15){
         if (crossword.correct[i] == 0){
           crossword.correct[i] = 1;
@@ -410,6 +429,11 @@ function checkWord(data){
     else {
       result = 'incorrect';
       var i = findIndexByClue(crossword, crossword.down[data.index]);
+      if (i=== false) {
+        console.log('THIS SHOULD NEVER HAPPEN4');;
+        console.log(data);
+        return;
+      }
       for (var l = data.guess.length*15+i; i < l; i+=15){
         if (crossword.correct[i] !== 1){
           crossword.guessed[i] = '';
@@ -442,7 +466,7 @@ function checkWord(data){
     }
     data.firstSquare = intersections[i].first+"";
     data.guess = intersections[i].letters+"";
-    data.index = intersections[i].index+"";
+    data.index = intersections[i].index*1;
     checkWord(data);
   }
 }
