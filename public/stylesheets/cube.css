@@ -308,6 +308,9 @@ body {
 #cube .face .square .correctWord {
   color: green;
 }
+#cube .face .square .incorrectWord {
+  color: red;
+}
 #show-buttons {
   display: none;
   margin-top: 120px;
