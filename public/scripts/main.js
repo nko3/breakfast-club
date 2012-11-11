@@ -82,6 +82,18 @@ socket.on('guessresults', function(data) {
 	}
 });
 
+socket.on('updateSelections', function(data) {
+	console.log('Player ' + data.user + ' just made a new selection of word index ' + data.wordIndex + ' and square indices ' + data.gridIndices + ' on ' + data.side);
+    
+    //if this wasn't you, remove their other selections and highlight this one
+    if (data.user !== userID) {
+    	$('.selectedBy' + data.user).removeClass('selectedBy' + data.user).removeClass('selectedByOther');
+    	for (var i in data.gridIndices) {
+	    	$('#' + data.side + ' .square[data-grid-index=' + data.gridIndices[i] + ']').addClass('selectedByOther').addClass('selectedBy' + data.user);
+	    }  
+    }       
+});
+
 function getClue(clues, num){
 	console.log(num);
 	for (var i in clues){
@@ -255,7 +267,14 @@ $(function(){
 		}
 		var clueDir = (direction === 'vertical') ? 'DOWN' : 'ACROSS';
 		$('#clue').html('<strong>' + clueDir + '</strong> ' + word.clue);
-		$(word.squares).addClass('selected').addClass(direction);
+
+		//add selection
+		var gridIndices = [];
+		for (var i in word.squares) {
+			gridIndices.push($(word.squares[i]).attr('data-grid-index'));
+		}
+		socket.emit('updateSelection', { user: userID, gridIndices: gridIndices, side: $(word.squares[0]).closest('.face').attr('id'), wordIndex: word.index, wordDirection: word.direction } );
+		$(word.squares).addClass('selected').addClass(direction).removeClass('selectedByOther').addClass('selectedBy' + userID);
 		word.direction = direction;
 
 		currentWord = word;

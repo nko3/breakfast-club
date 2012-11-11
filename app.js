@@ -361,6 +361,13 @@ io.sockets.on('connection', function (socket) {
     });
   });
 
+  socket.on('updateSelection', function(data) {
+    console.log('user #' + data.user + ' has selected a word');
+
+    io.sockets.emit('updateSelections', data);
+
+  });
+
   socket.on('checkword', function (data) {
     console.log(data);
     var crossword = findSideByID(data.side);

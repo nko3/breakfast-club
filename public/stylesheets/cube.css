@@ -326,6 +326,9 @@ body {
 #cube .face .square.selected {
   background-color: #bbe;
 }
+#cube .face .square.selectedByOther {
+  background-color: #cc3333;
+}
 #cube .face .square .clueNum {
   position: absolute;
   top: -8px;
