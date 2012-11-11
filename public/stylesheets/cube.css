@@ -257,6 +257,9 @@ body {
   overflow-x: hidden;
   height: 140px;
 }
+#chat-window .user-list #users div {
+  padding: 2px 8px;
+}
 #chat-window #conversation {
   float: left;
   width: 100%;
