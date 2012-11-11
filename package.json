@@ -1,6 +1,6 @@
 {
   "name": "nko3-breakfast-club",
-  "version": "0.0.1-10",
+  "version": "0.0.2-1",
   "description": "Breakfast Club",
   "main": "app.js",
   "scripts": {
