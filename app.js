@@ -426,10 +426,11 @@ io.sockets.on('connection', function (socket) {
     if (result === 'correct') {
       findById(data.user, function(err, user) {
         if (user) {
-          user.score++;
-          usernames[user.id].score++;
+          var newScore = user.score + data.guess.length;
+          user.score = newScore;
+          usernames[user.id].score = newScore;
           io.sockets.emit('updateusers', usernames);
-          
+
           if (crossword.correct.indexOf(0) === -1) {
             console.log('side complete');
             getPuzzle(data.side, usedPuzzles);
