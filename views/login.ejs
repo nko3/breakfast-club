@@ -12,21 +12,39 @@
         </div>
         
         <div id="wrapper">
-            <form action="/login" method="post">
-                <div>
-                    <label>Username:</label>
-                    <input type="text" name="username"/><br/>
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input type="password" name="password"/>
-                </div>
-                <div>
-                    <input type="submit" value="Log In"/>
-                </div>
-            </form>
+            <div class="pull-right">
+                <form action="/login" method="post">
+                    <h2>Login</h2>
+                    <div>
+                        <label>Username:</label>
+                        <input type="text" name="username"/><br/>
+                    </div>
+                    <div>
+                        <label>Password:</label>
+                        <input type="password" name="password"/>
+                    </div>
+                    <div>
+                        <input type="submit" value="Log In"/>
+                    </div>
+                </form>
+            </div>
+            <div class="pull-right">
+                <form action="/register" method="post">
+                    <h2>Register</h2>
+                    <div>
+                        <label>Username:</label>
+                        <input type="text" name="username"/><br/>
+                    </div>
+                    <div>
+                        <label>Password:</label>
+                        <input type="password" name="password"/>
+                    </div>
+                    <div>
+                        <input type="submit" value="Log In"/>
+                    </div>
+                </form>
+            </div>
         </div>
-
         <script src="http://code.jquery.com/jquery.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
     </body>
