@@ -63,6 +63,10 @@ socket.on('updateletter', function(data) {
 	$('#' + data.side + ' .square[data-grid-index="' + data.index + '"] .letter').html(data.letter);
 });
 
+socket.on('refreshuser', function(data) {
+	window.location = '/users';
+});
+
 socket.on('guessresults', function(data) {
 	if (data.result === 'incorrect') {
 		var firstSquare = $('#' + data.data.side + ' .square[data-grid-index="' + data.data.firstSquare + '"]').first();
