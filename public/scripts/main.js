@@ -6,8 +6,11 @@ var currentWord;
 // on connection to server, ask for user's name with an anonymous callback
 socket.on('connect', function(){
 	// call the server-side function 'adduser' and send one parameter (value of prompt)
-	var username = prompt("What's your name?" || 'Anonymous');
+	var username = prompt("What's your name?");
 	username = username.replace(/(<([^>]+)>)/ig,"");
+	if (username === '') {
+		username = "Anonymous";
+	}
 	socket.emit('adduser', username);
 });
 
