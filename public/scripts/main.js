@@ -207,6 +207,7 @@ $(function(){
 		//backspace - delete last letter that's not empty or part of a correct word
 		if(e.which == 8) {
 			$(currentWord.squares).find('.letter').not(':empty').not('.correctWord').last().html('');
+			event.preventDefault();
 		}
 		//letter
 		var letter = String.fromCharCode(e.which);
@@ -248,6 +249,26 @@ $(function(){
 			socket.emit('checkword', { guess: word, user: userID, index: currentWord.index, direction: currentWord.direction, side: $(currentWord.squares[0]).closest('.face').attr('id'), firstSquare: $(currentWord.squares[0]).attr('data-grid-index') });
 			return;
 		}
+	});
+
+	// Prevent the backspace key from navigating back.
+	$(document).unbind('keydown').bind('keydown', function (event) {
+	    var doPrevent = false;
+	    if (event.keyCode === 8) {
+	        var d = event.srcElement || event.target;
+	        if ((d.tagName.toUpperCase() === 'INPUT' && (d.type.toUpperCase() === 'TEXT' || d.type.toUpperCase() === 'PASSWORD')) 
+	             || d.tagName.toUpperCase() === 'TEXTAREA') {
+	            doPrevent = d.readOnly || d.disabled;
+	        }
+	        else {
+	        	$(currentWord.squares).find('.letter').not(':empty').not('.correctWord').last().html('');
+	            doPrevent = true;
+	        }
+	    }
+
+	    if (doPrevent) {
+	        event.preventDefault();
+	    }
 	});
 
 	$(document).on('click', '.square', function(){
