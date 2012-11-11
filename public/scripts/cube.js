@@ -53,7 +53,7 @@ var flipCube = function(direction) {
 	var currentSide = cube.attr('class') || 'show-front';
 	var flipTo = findAdjacentSide(currentSide,direction);
 	cube.removeClass(currentSide).addClass(flipTo);
-	$('#faceInfo').html('<strong>' + flipTo.substring(5).toUpperCase() + '</strong>' + '<span class="puzzleDate">00/00/00</span>');
+	$('#faceInfo').html('<strong>' + flipTo.substring(5).toUpperCase() + '</strong>' + '<span class="puzzleDate">' + date[flipTo.substring(5)] + '</span>');
 };
 
 $('#flipRight').click(function() {flipCube('right');});

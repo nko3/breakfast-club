@@ -131,7 +131,8 @@ var buildGrid = function(obj, gameID) {
     guessed: gridGuessed,
     gridnums: obj.gridnums,
     across: obj.clues.across,
-    down: obj.clues.down
+    down: obj.clues.down,
+    date: obj.date
   };
 
   serverCrossword = {
