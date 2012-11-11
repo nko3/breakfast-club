@@ -324,10 +324,7 @@ body {
   background-color: black;
 }
 #cube .face .square.selected {
-  background-color: #bbe;
-}
-#cube .face .square.selectedByOther {
-  background-color: #cc3333;
+  border-color: #444;
 }
 #cube .face .square .clueNum {
   position: absolute;
