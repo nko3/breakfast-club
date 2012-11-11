@@ -14,9 +14,6 @@ var express = require('express')
 var app = express();
 var io = require('socket.io');
 
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://nodejitsu_nko3-breakfast-club:c5hnji4ar2keqh9eahr962v0r@ds039277.mongolab.com:39277/nodejitsu_nko3-breakfast-club_nodejitsudb4733696326');
-
 var nextID = 1;
 
 var users = [];
@@ -419,16 +416,16 @@ function checkWord(data){
 
   if (result === 'correct') {
     findById(data.user, function(err, user) {
-      if (user === data.user) {
-        var newScore = user.score + data.guess.length;
-        user.score = newScore;
-        usernames[user.id].score = newScore;
-        io.sockets.emit('updateusers', usernames);
+      if (user) {
+          var newScore = user.score + data.guess.length;
+          user.score = newScore;
+          usernames[user.id].score = newScore;
+          io.sockets.emit('updateusers', usernames);
 
-        if (crossword.correct.indexOf(0) === -1) {
-          console.log('side complete');
-          getPuzzle(data.side, usedPuzzles);
-        }
+          if (crossword.correct.indexOf(0) === -1) {
+            console.log('side complete');
+            getPuzzle(data.side, usedPuzzles);
+          }
       }
     });
   }
@@ -498,7 +495,7 @@ io.sockets.on('connection', function (socket) {
     socket.userColor = data.color;
 
     findById(socket.userID, function(err, user) {
-        if (user && users[data.id - 1]) {
+        if (user) {
             usernames[socket.userID] = {id: socket.userID, username: socket.username, score: user.score, color: socket.userColor};
             // echo globally (all clients) that a person has connected
             socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has connected');
@@ -510,7 +507,7 @@ io.sockets.on('connection', function (socket) {
             }
         }
         else {
-          socket.emit('refreshuser', data.id);
+          //socket.emit('refreshuser', data.id);
         }
     });
   });
