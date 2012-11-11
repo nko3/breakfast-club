@@ -39,7 +39,7 @@ socket.on('updategrid', function(data) {
 	$('#' + data.gameID)
 		.empty()
 		.data('data', data);
-	grid = data.grid;	
+	grid = data.grid;
 	date[data.gameID] = data.date;
 	for (i=0; i < grid.length; i++) {
 		if (grid[i].active === "active") {

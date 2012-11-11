@@ -12,6 +12,9 @@ var express = require('express')
 var app = express();
 var io = require('socket.io');
 
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://nodejitsu_nko3-breakfast-club:c5hnji4ar2keqh9eahr962v0r@ds039277.mongolab.com:39277/nodejitsu_nko3-breakfast-club_nodejitsudb4733696326');
+
 var passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy;
 
