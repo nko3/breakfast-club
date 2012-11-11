@@ -256,10 +256,13 @@ io.sockets.on('connection', function (socket) {
     }
     var crossword;
     for(var i in clientCrosswords){
-      if (clientCrosswords[i].gameID){
+      if (clientCrosswords[i].gameID == data.side){
         crossword = clientCrosswords[i];
         break;
       }
+    }
+    if (!crossword){
+      return;
     }
     crossword.guessed[data.index] = data.letter;
     socket.broadcast.emit('updateletter', data);
