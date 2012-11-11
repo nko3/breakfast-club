@@ -355,6 +355,10 @@ function getWordFromIndex(crossword, direction, index){
   return word;
 }
 function checkWord(data){
+  if (!data ||
+      !data.index){
+    return;
+  }
   var crossword = findSideByID(data.side);
   var result = '';
   var intersections = [];
@@ -362,7 +366,7 @@ function checkWord(data){
   if (data.direction === 'horizontal') {
     if (data.guess.toUpperCase() === crossword.answers.across[data.index]) {
       var userDidFinish = false;
-      var i = findIndexByClue(crossword, crossword.across[parseInt(data.index)]);
+      var i = findIndexByClue(crossword, crossword.across[data.index]);
       for (var l = data.guess.length+i; i < l; i++){
         if (crossword.correct[i] == 0){
           crossword.correct[i] = 1;
