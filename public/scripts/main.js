@@ -33,9 +33,9 @@ socket.on('updatechat', function (username, data) {
 // listener, whenever the server emits 'updateusers', this updates the username list
 socket.on('updateusers', function(data) {
 	$('#users').empty();
+	$('#userStyles').empty();
 	$.each(data, function(key, value) {
 		$('#users').append('<div style="background-color:' + value.color + '">' + value.username + '- Score: ' +  value.score + '</div>');
-		$('#userStyles').empty();
 		$("<style type='text/css'> .selectedBy" + value.id + " { background-color: " + value.color + " !important;} </style>").appendTo("#userStyles");
 	});
 });
