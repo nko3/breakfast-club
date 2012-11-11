@@ -316,7 +316,7 @@ function getWordFromIndex(crossword, direction, index){
     var start = index;
     while (index < crossword.grid.length){
       word.letters += crossword.guessed[index] || ' ';
-      if (crossword.grid[index+15].active == 'disabled'){
+      if (crossword.grid[index+15] && crossword.grid[index+15].active == 'disabled'){
         break;
       }else {
         index+=15;
