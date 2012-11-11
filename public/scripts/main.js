@@ -47,7 +47,7 @@ socket.on('updategrid', function(data) {
 	for (i=0; i < grid.length; i++) {
 		if (grid[i].active === "active") {
 			var clue = (data.gridnums[i] != '0') ? '<span class="clueNum">' + data.gridnums[i] + '</span>' : '';
-			$('#' + data.gameID).append('<div class="square" data-grid-index=' + i + '>' + clue + '<span class="letter">' + data.guessed[i] + '</span></div>');
+			$('#' + data.gameID).append('<div class="square" data-grid-index=' + i + '>' + clue + '<span class="letter ' + (data.correct[i] ? 'correctWord' : '') + '">' + data.guessed[i] + '</span></div>');
 		}
 		else {
 			$('#' + data.gameID).append('<div class="square black"></div>');

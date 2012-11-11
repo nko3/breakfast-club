@@ -58,8 +58,10 @@ var buildGrid = function(obj, gameID) {
     var grid = [];
     // Create empty array for guessed words
     var gridGuessed = [];
+    var gridCorrect = [];
     for (i=0; i < 225; i++){
       gridGuessed.push('');
+      gridCorrect.push(0);
     }
 
     // initialize acrossWordGrid with array of 255 empty strings.
@@ -114,6 +116,7 @@ var buildGrid = function(obj, gameID) {
     if (letter === ".") {
       letter = '';
       active = 'disabled';
+      gridCorrect[i] = 1; // the blank ones are already what they need to be
     }
     // otherwise add words letter belongs to
     else {
@@ -130,7 +133,6 @@ var buildGrid = function(obj, gameID) {
     }
 
     item = {letter: '', num: num, active: active, index:i, wordAcross:wordAcross, wordDown: wordDown};
-
     grid.push(item);
   }
 
@@ -139,7 +141,9 @@ var buildGrid = function(obj, gameID) {
   clientCrossword = {
     gameID: gameID,
     grid: grid,
+    answers: obj.answers,
     guessed: gridGuessed,
+    correct: gridCorrect,
     gridnums: obj.gridnums,
     across: obj.clues.across,
     down: obj.clues.down,
@@ -151,6 +155,7 @@ var buildGrid = function(obj, gameID) {
     answers: obj.answers,
     grid: grid,
     guessed: gridGuessed,
+    correct: gridCorrect,
     gridnums: obj.gridnums,
     across: obj.clues.across,
     down: obj.clues.down
@@ -202,6 +207,11 @@ var findSideByID = function(id) {
     }
   }
 };
+
+function findIndexByClue(crossword, clue){
+  var clueid = parseInt(clue.split('.')[0]);
+  return crossword.gridnums.indexOf(clueid);
+}
 
 getPuzzle('front', usedPuzzles);
 getPuzzle('back', usedPuzzles);
@@ -262,6 +272,10 @@ io.sockets.on('connection', function (socket) {
     if (data.direction === 'horizontal') {
       if (data.guess.toUpperCase() === crossword.answers.across[data.index]) {
         result = 'correct';
+        var i = findIndexByClue(crossword, crossword.across[parseInt(data.index)]);
+        for (var l = data.guess.length+i; i < l; i++){
+          crossword.correct[i] = 1;
+        }
       }
       else {
         result = 'incorrect';
@@ -270,6 +284,10 @@ io.sockets.on('connection', function (socket) {
     else if (data.direction === 'vertical') {
       if (data.guess.toUpperCase() === crossword.answers.down[data.index]) {
         result = 'correct';
+        var i = findIndexByClue(crossword, crossword.down[data.index]);
+        for (var l = data.guess.length*15+i; i < l; i+=15){
+          crossword.correct[i] = 1;
+        }
       }
       else {
         result = 'incorrect';
@@ -283,13 +301,7 @@ io.sockets.on('connection', function (socket) {
     if (!data.letter){
       return;
     }
-    var crossword;
-    for(var i in clientCrosswords){
-      if (clientCrosswords[i].gameID == data.side){
-        crossword = clientCrosswords[i];
-        break;
-      }
-    }
+    var crossword = findSideByID(data.side);
     if (!crossword){
       return;
     }
