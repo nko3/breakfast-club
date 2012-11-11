@@ -192,6 +192,7 @@ var findSideByID = function(id) {
   }
 };
 
+
 getPuzzle('front', usedPuzzles);
 getPuzzle('back', usedPuzzles);
 getPuzzle('left', usedPuzzles);
@@ -269,6 +270,14 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('sendletter', function (data) {
     console.log('letter sent.');
+    var crossword;
+    for(var i in clientCrosswords){
+      if (serverCrosswords[i].gameID){
+        crossword = clientCrosswords[i];
+        break;
+      }
+    }
+    crossword.guessed[data.index] = data.letter.join('');
     socket.broadcast.emit('updateletter', data);
   });
 

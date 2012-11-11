@@ -33,11 +33,10 @@ socket.on('updategrid', function(data) {
 		.data('data', data);
 	grid = data.grid;	
 	date[data.gameID] = data.date;
-
 	for (i=0; i < grid.length; i++) {
 		if (grid[i].active === "active") {
 			var clue = (data.gridnums[i] != '0') ? '<span class="clueNum">' + data.gridnums[i] + '</span>' : '';
-			$('#' + data.gameID).append('<div class="square" data-grid-index=' + i + '>' + clue + '<span class="letter"></span></div>');
+			$('#' + data.gameID).append('<div class="square" data-grid-index=' + i + '>' + clue + '<span class="letter">' + data.guessed[i] + '</span></div>');
 		}
 		else {
 			$('#' + data.gameID).append('<div class="square black"></div>');
