@@ -18,7 +18,8 @@
     "socket.io": "0.9",
     "session.socket.io": "*",
     "connect": "*",
-    "passport": "*"
+    "passport": "*",
+    "passport-local": "*"
   },
   "engines": {
     "node": "0.8.x"
