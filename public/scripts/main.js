@@ -1,16 +1,20 @@
 var socket = io.connect(document.URL);
 var grid = [];
+var date = [];
 var currentWord;
 
 // on connection to server, ask for user's name with an anonymous callback
 socket.on('connect', function(){
 	// call the server-side function 'adduser' and send one parameter (value of prompt)
-	socket.emit('adduser', prompt("What's your name?") || 'Anonymous');
+	var username = prompt("What's your name?" || 'Anonymous');
+	username = username.replace(/(<([^>]+)>)/ig,"");
+	socket.emit('adduser', username);
 });
 
 // listener, whenever the server emits 'updatechat', this updates the chat body
 socket.on('updatechat', function (username, data) {
 	var convo = $('#conversation');
+	data = data.replace(/(<([^>]+)>)/ig,"");
 	convo.append('<b>'+username + ':</b> ' + data + '<br>');
 	convo.scrollTop(convo.prop('scrollHeight'));
 });
@@ -27,7 +31,8 @@ socket.on('updategrid', function(data) {
 	$('#' + data.gameID)
 		.empty()
 		.data('data', data);
-	grid = data.grid;
+	grid = data.grid;	
+	date[data.gameID] = data.date;
 
 	for (i=0; i < grid.length; i++) {
 		if (grid[i].active === "active") {
@@ -38,6 +43,8 @@ socket.on('updategrid', function(data) {
 			$('#' + data.gameID).append('<div class="square black"></div>');
 		}
 	}
+
+	$('#faceInfo').html('<strong>FRONT</strong> ' + '<span class="puzzleDate">' + date['front'] + '</span>');
 });
 
 socket.on('updateletter', function(data) {
@@ -147,7 +154,7 @@ function getWord(square, direction){
 }
 // on load of page
 $(function(){
-	$('#faceInfo').html('<strong>FRONT</strong> ' + '<span class="puzzleDate">00/00/00</span>');
+	 
 	// when the client clicks SEND
 	$('#datasend').click( function() {
 		var message = $('#data').val();
