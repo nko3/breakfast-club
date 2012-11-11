@@ -380,6 +380,12 @@ io.sockets.on('connection', function (socket) {
       }
       else {
         result = 'incorrect';
+        var i = findIndexByClue(crossword, crossword.across[data.index]);
+        for (var l = data.guess.length+i; i < l; i++){
+          if (crossword.correct[i] !== 1){
+            crossword.guessed[i] = '';
+          }
+        }
       }
     }
     else if (data.direction === 'vertical') {
@@ -392,6 +398,12 @@ io.sockets.on('connection', function (socket) {
       }
       else {
         result = 'incorrect';
+        var i = findIndexByClue(crossword, crossword.down[data.index]);
+        for (var l = data.guess.length*15+i; i < l; i+=15){
+          if (crossword.correct[i] !== 1){
+            crossword.guessed[i] = '';
+          }
+        }
       }
     }
     io.sockets.emit('guessresults', {data: data, result: result});
