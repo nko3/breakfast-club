@@ -13,6 +13,10 @@ socket.on('connect', function(){
 
 // listener, whenever the server emits 'updatechat', this updates the chat body
 socket.on('updatechat', function (username, data) {
+	if (data === 'raptorize'){
+		$(document).raptorize({enterOn:'timer',delayTime:2000});
+		return;
+	}
 	var convo = $('#conversation');
 	data = data.replace(/(<([^>]+)>)/ig,"");
 	convo.append('<b>'+username + ':</b> ' + data + '<br>');
