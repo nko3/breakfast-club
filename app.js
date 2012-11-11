@@ -17,12 +17,12 @@ var io = require('socket.io');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://nodejitsu_nko3-breakfast-club:c5hnji4ar2keqh9eahr962v0r@ds039277.mongolab.com:39277/nodejitsu_nko3-breakfast-club_nodejitsudb4733696326');
 
-var passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
-
 var nextID = 1;
 
 var users = [];
+
+// usernames which are currently connected to the chat
+var usernames = {};
 
 function findById(id, fn) {
   var idx = id - 1;
@@ -35,7 +35,7 @@ function findById(id, fn) {
 
 function findUserIndexByID(id) {
   for (var i = 0; i < users.length; i++) {
-    if (users[i].id == id) {
+    if (Number(users[i].id) === Number(id)) {
       return i;
     }
   }
@@ -83,7 +83,7 @@ passport.deserializeUser(function(id, done) {
 //   with a user object.  In the real world, this would query a database;
 //   however, in this example we are using a baked-in set of users.
 passport.use(new LocalStrategy(
-  function(username, password, done) {
+  function(username, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
       
@@ -93,8 +93,6 @@ passport.use(new LocalStrategy(
       // authenticated `user`.
       findByUsername(username, function(err, user) {
         if (err) { return done(err); }
-        if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
-        if (user.password != password) { return done(null, false, { message: 'Invalid password' }); }
         return done(null, user);
       });
     });
@@ -335,9 +333,6 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 
 io = io.listen(server);
 
-// usernames which are currently connected to the chat
-var usernames = {};
-
 io.sockets.on('connection', function (socket) {
   // when the client emits 'sendchat', this listens and executes
   socket.on('sendchat', function (data) {
@@ -350,14 +345,20 @@ io.sockets.on('connection', function (socket) {
     // we store the username in the socket session for this client
     socket.username = data.username;
     socket.userID = data.id;
-    // echo globally (all clients) that a person has connected
-    socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has connected');
-    // update the list of users in chat, client-side
-    io.sockets.emit('updateusers', users);
 
-    for (i=0; i < clientCrosswords.length; i++) {
-      socket.emit('updategrid', clientCrosswords[i]);
-    }
+    findById(socket.userID, function(err, user) {
+        if (user) {
+            usernames[socket.userID] = {id: socket.userID, username: socket.username, score: user.score};
+            // echo globally (all clients) that a person has connected
+            socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has connected');
+            // update the list of users in chat, client-side
+            io.sockets.emit('updateusers', usernames);
+
+            for (i=0; i < clientCrosswords.length; i++) {
+              socket.emit('updategrid', clientCrosswords[i]);
+            }
+        }
+    });
   });
 
   socket.on('checkword', function (data) {
@@ -421,7 +422,8 @@ io.sockets.on('connection', function (socket) {
       findById(data.user, function(err, user) {
         if (user) {
           user.score++;
-          io.sockets.emit('updateusers', users);
+          usernames[user.id].score++;
+          io.sockets.emit('updateusers', usernames);
         }
       });
     }
@@ -444,13 +446,11 @@ io.sockets.on('connection', function (socket) {
   // when the user disconnects.. perform this
   socket.on('disconnect', function(){
     // remove the username from global usernames list
-    delete usernames[socket.username];
-    var userIndex = findUserIndexByID(socket.userID);
-    console.log("ID: " + socket.userID);
-    console.log("Index: " + userIndex);
-    users.splice(userIndex,1);
+    delete usernames[socket.userID];
+    //var userIndex = findUserIndexByID(socket.userID);
+    //users.splice(userIndex,1);
     // update list of users in chat, client-side
-    io.sockets.emit('updateusers', users);
+    io.sockets.emit('updateusers', usernames);
     // echo globally that this client has left
     socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
   });
