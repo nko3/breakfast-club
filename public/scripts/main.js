@@ -28,9 +28,9 @@ socket.on('updatechat', function (username, data) {
 // listener, whenever the server emits 'updateusers', this updates the username list
 socket.on('updateusers', function(data) {
 	$('#users').empty();
-	for (i=0; i < data.length; i++) {
-		$('#users').append('<div>' + data[i].username + '- Score: ' +  data[i].score + '</div>');
-	}
+	$.each(data, function(key, value) {
+		$('#users').append('<div>' + value.username + '- Score: ' +  value.score + '</div>');
+	});
 });
 
 socket.on('updategrid', function(data) {
