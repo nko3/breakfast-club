@@ -289,20 +289,10 @@ getPuzzle('bottom', usedPuzzles);
 app.get('/', routes.index);
 app.get('/users', user.list);
 
-app.post('/login',
-  passport.authenticate('local'),
-  function(req, res) {
-    // If this function gets called, authentication was successful.
-    // `req.user` property contains the authenticated user.
-    console.log('logged in');
-    res.redirect('/');
-  });
-
 app.post('/register', function(req, resp){
     var username = req.body.username.replace(/(<([^>]+)>)/ig,"");
-    var password = req.body.password.replace(/(<([^>]+)>)/ig,"");
 
-    var user = {id: nextID, score: 0, username: username, password: password};
+    var user = {id: nextID, score: 0, username: username};
     users.push(user);
     nextID++;
 
