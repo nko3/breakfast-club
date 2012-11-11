@@ -340,7 +340,7 @@ function getWordFromIndex(crossword, direction, index){
     console.log(start);
     while (index < crossword.grid.length){
       word.letters += crossword.guessed[index] || ' ';
-      if (crossword.grid[index+1].active == 'disabled'){
+      if (crossword.grid[index+1] && crossword.grid[index+1].active == 'disabled'){
         break;
       }else {
         index++;
