@@ -522,10 +522,6 @@ io.sockets.on('connection', function (socket) {
   socket.on('checkword', checkWord);
 
   socket.on('sendletter', function (data) {
-    console.log('letter sent: '+data.letter);
-    if (!data.letter){
-      return;
-    }
     var crossword = findSideByID(data.side);
     if (!crossword){
       return;
