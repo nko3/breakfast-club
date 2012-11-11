@@ -66,7 +66,6 @@ socket.on('guessresults', function(data) {
 			$(square).find('.letter').addClass('correctWord');
 		}
 	}
-	alert(data.result);
 });
 
 function getClue(clues, num){
