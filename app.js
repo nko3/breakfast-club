@@ -371,10 +371,18 @@ io.sockets.on('connection', function (socket) {
     var result = '';
     if (data.direction === 'horizontal') {
       if (data.guess.toUpperCase() === crossword.answers.across[data.index]) {
-        result = 'correct';
+        var userDidFinish = false;
         var i = findIndexByClue(crossword, crossword.across[parseInt(data.index)]);
         for (var l = data.guess.length+i; i < l; i++){
-          crossword.correct[i] = 1;
+          if (crossword.correct[i] == 0){
+            crossword.correct[i] = 1;
+            userDidFinish = true;
+          }
+        }
+        if (userDidFinish){
+          result = 'correct';
+        }else {
+          result = 'cheating';
         }
       }
       else {
@@ -389,10 +397,18 @@ io.sockets.on('connection', function (socket) {
     }
     else if (data.direction === 'vertical') {
       if (data.guess.toUpperCase() === crossword.answers.down[data.index]) {
-        result = 'correct';
+        var userDidFinish = false;
         var i = findIndexByClue(crossword, crossword.down[data.index]);
         for (var l = data.guess.length*15+i; i < l; i+=15){
-          crossword.correct[i] = 1;
+          if (crossword.correct[i] == 0){
+            crossword.correct[i] = 1;
+            userDidFinish = true;
+          }
+        }
+        if (userDidFinish){
+          result = 'correct';
+        }else {
+          result = 'cheating';
         }
       }
       else {
