@@ -187,25 +187,38 @@ $(function(){
 		var letter = String.fromCharCode(e.which);
 		letter = letter.match(/[A-Za-z]/);
 		var box = false;
+		//for each letter in the word
 		for (var i in currentWord.squares){
 			var square = currentWord.squares[i];
+			//if the square contains a letter, skip it
 			if ($(square).find('.letter').html() !== ''){
 				continue;
 			}
+
 			box = square;
 			break;
 		}
-		if (!box){
+
+		//add the letter to the current box
+		socket.emit('sendletter', {letter:letter, index:$(box).attr('data-grid-index'), side: $(box).closest('.face').attr('id') });
+		$(box).find('.letter').html(letter);
+		
+		//if there are no more letters
+		if ($(currentWord.squares).find('.letter:empty').length === 0) {
+			currentWord.done = true;
+		}
+
+		//all letters in word have already been filled, so the word is done
+		if (!box || currentWord.done){
 			currentWord.done = true;
 			var word = '';
 			for (var i in currentWord.squares){
 				word += $(currentWord.squares[i]).find('.letter').html();
 			}
+			//check if the word is right
 			socket.emit('checkword', { guess: word, index: currentWord.index, direction: currentWord.direction, side: $(currentWord.squares[0]).closest('.face').attr('id'), firstSquare: $(currentWord.squares[0]).attr('data-grid-index') });
 			return;
 		}
-		socket.emit('sendletter', {letter:letter, index:$(box).attr('data-grid-index'), side: $(box).closest('.face').attr('id') });
-		$(box).find('.letter').html(letter);
 	});
 
 	$(document).on('click', '.square', function(){
