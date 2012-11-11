@@ -12,6 +12,24 @@ var express = require('express')
 var app = express();
 var io = require('socket.io');
 
+var passport = require('passport')
+  , LocalStrategy = require('passport-local').Strategy;
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    User.findOne({ username: username }, function(err, user) {
+      if (err) { return done(err); }
+      if (!user) {
+        return done(null, false, { message: 'Unknown user' });
+      }
+      if (!user.validPassword(password)) {
+        return done(null, false, { message: 'Invalid password' });
+      }
+      return done(null, user);
+    });
+  }
+));
+
 app.configure(function(){
   app.set('port', 8000);
   app.set('views', __dirname + '/views');
@@ -191,6 +209,14 @@ getPuzzle('bottom', usedPuzzles);
 
 app.get('/', routes.index);
 app.get('/users', user.list);
+
+app.post('/login',
+  passport.authenticate('local'),
+  function(req, res) {
+    // If this function gets called, authentication was successful.
+    // `req.user` property contains the authenticated user.
+    console.log('logged in');
+  });
 
 var server = http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

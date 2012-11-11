@@ -2,6 +2,7 @@ var socket = io.connect(document.URL);
 var grid = [];
 var date = [];
 var currentWord;
+var lastRaptor = 0;
 
 // on connection to server, ask for user's name with an anonymous callback
 socket.on('connect', function(){
@@ -17,7 +18,10 @@ socket.on('connect', function(){
 // listener, whenever the server emits 'updatechat', this updates the chat body
 socket.on('updatechat', function (username, data) {
 	if (data === 'raptorize'){
-		$(document).raptorize({enterOn:'timer',delayTime:2000});
+		if (new Date - lastRaptor > 60000){
+			$(document).raptorize({enterOn:'timer',delayTime:2000});
+			lastRaptor = +new Date;
+		}
 		return;
 	}
 	var convo = $('#conversation');
