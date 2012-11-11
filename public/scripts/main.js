@@ -58,6 +58,8 @@ socket.on('guessresults', function(data) {
 			var square = word.squares[i];
 			$(square).find('.letter:not(.correctWord)').html('');
 		}
+		//fake a refocus on this word
+		firstSquare.click().click();
 	} else {
 		var firstSquare = $('#' + data.data.side + ' .square[data-grid-index="' + data.data.firstSquare + '"]').first();
 		var word = getWord(firstSquare, data.data.direction);
