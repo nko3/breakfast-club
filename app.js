@@ -299,11 +299,10 @@ app.post('/login',
   });
 
 app.post('/register', function(req, resp){
-    // user is the user instance you just registered and created
-    var username = req.body.username;
-    var password = req.body.password;
+    var username = req.body.username.replace(/(<([^>]+)>)/ig,"");
+    var password = req.body.password.replace(/(<([^>]+)>)/ig,"");
 
-    var user = {id: nextID, username: username, password: password};
+    var user = {id: nextID, score: 0, username: username, password: password};
     users.push(user);
     nextID++;
 
@@ -359,7 +358,7 @@ io.sockets.on('connection', function (socket) {
     // echo globally (all clients) that a person has connected
     socket.broadcast.emit('updatechat', 'SERVER', username + ' has connected');
     // update the list of users in chat, client-side
-    io.sockets.emit('updateusers', usernames);
+    io.sockets.emit('updateusers', users);
 
     for (i=0; i < clientCrosswords.length; i++) {
       socket.emit('updategrid', clientCrosswords[i]);
@@ -406,6 +405,15 @@ io.sockets.on('connection', function (socket) {
         }
       }
     }
+
+    if (result === 'correct') {
+      findById(data.user, function(err, user) {
+        if (user) {
+          user.score++;
+          io.sockets.emit('updateusers', users);
+        }
+      });
+    }
     io.sockets.emit('guessresults', {data: data, result: result});
   });
 
@@ -427,7 +435,7 @@ io.sockets.on('connection', function (socket) {
     // remove the username from global usernames list
     delete usernames[socket.username];
     // update list of users in chat, client-side
-    io.sockets.emit('updateusers', usernames);
+    io.sockets.emit('updateusers', users);
     // echo globally that this client has left
     socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
   });

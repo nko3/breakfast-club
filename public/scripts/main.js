@@ -28,9 +28,9 @@ socket.on('updatechat', function (username, data) {
 // listener, whenever the server emits 'updateusers', this updates the username list
 socket.on('updateusers', function(data) {
 	$('#users').empty();
-	$.each(data, function(key, value) {
-		$('#users').append('<div>' + key + '</div>');
-	});
+	for (i=0; i < data.length; i++) {
+		$('#users').append('<div>' + data[i].username + '- Score: ' +  data[i].score + '</div>');
+	}
 });
 
 socket.on('updategrid', function(data) {
@@ -160,7 +160,6 @@ function getWord(square, direction){
 }
 // on load of page
 $(function(){
-	 
 	// when the client clicks SEND
 	$('#datasend').click( function() {
 		var message = $('#data').val();
@@ -226,7 +225,7 @@ $(function(){
 				word += $(currentWord.squares[i]).find('.letter').html();
 			}
 			//check if the word is right
-			socket.emit('checkword', { guess: word, index: currentWord.index, direction: currentWord.direction, side: $(currentWord.squares[0]).closest('.face').attr('id'), firstSquare: $(currentWord.squares[0]).attr('data-grid-index') });
+			socket.emit('checkword', { guess: word, user: userID, index: currentWord.index, direction: currentWord.direction, side: $(currentWord.squares[0]).closest('.face').attr('id'), firstSquare: $(currentWord.squares[0]).attr('data-grid-index') });
 			return;
 		}
 	});
