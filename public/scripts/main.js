@@ -259,22 +259,26 @@ $(function(){
 
 	// Prevent the backspace key from navigating back.
 	$(document).unbind('keydown').bind('keydown', function (event) {
-	    var doPrevent = false;
-	    if (event.keyCode === 8) {
-	        var d = event.srcElement || event.target;
-	        if ((d.tagName.toUpperCase() === 'INPUT' && (d.type.toUpperCase() === 'TEXT' || d.type.toUpperCase() === 'PASSWORD')) 
-	             || d.tagName.toUpperCase() === 'TEXTAREA') {
-	            doPrevent = d.readOnly || d.disabled;
-	        }
-	        else {
-	        	$(currentWord.squares).find('.letter').not(':empty').not('.correctWord').last().html('');
-	            doPrevent = true;
-	        }
-	    }
+		var doPrevent = false;
+		if (event.keyCode === 8) {
+			var d = event.srcElement || event.target;
+			if ((d.tagName.toUpperCase() === 'INPUT' && (d.type.toUpperCase() === 'TEXT' || d.type.toUpperCase() === 'PASSWORD')) || d.tagName.toUpperCase() === 'TEXTAREA') {
+				doPrevent = d.readOnly || d.disabled;
+			}
+			else {
+				if ($(currentWord.squares).find('.letter').not(':empty').not('.correctWord').last()) {
+					var index = $(currentWord.squares).find('.letter').not(':empty').not('.correctWord').last().closest('.square').attr('data-grid-index');
+					var face = $(currentWord.squares).find('.letter').not(':empty').not('.correctWord').last().closest('.face').attr('id');
+					$(currentWord.squares).find('.letter').not(':empty').not('.correctWord').last().html('');
+					socket.emit('sendletter', {letter:'', index: index, side: face });
+				}
+				doPrevent = true;
+			}
+		}
 
-	    if (doPrevent) {
-	        event.preventDefault();
-	    }
+		if (doPrevent) {
+			event.preventDefault();
+		}
 	});
 
 	$(document).on('click', '.square', function(){
