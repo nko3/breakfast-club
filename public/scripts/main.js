@@ -7,7 +7,12 @@ var lastRaptor = 0;
 // on connection to server, ask for user's name with an anonymous callback
 socket.on('connect', function(){
 	// call the server-side function 'adduser' and send one parameter (value of prompt)
-	socket.emit('adduser', {username: username, id: userID});
+	//var color = '#' + Math.floor(Math.random()*16777215).toString(16);
+	var red = Math.floor(Math.random()*100) + 140,
+		blue = Math.floor(Math.random()*100) + 140,
+		green = Math.floor(Math.random()*100) + 140;
+	var color = 'rgb(' + red + ', ' + green + ', ' + blue + ')';
+	socket.emit('adduser', {username: username, id: userID, color: color});
 });
 
 // listener, whenever the server emits 'updatechat', this updates the chat body
@@ -29,7 +34,8 @@ socket.on('updatechat', function (username, data) {
 socket.on('updateusers', function(data) {
 	$('#users').empty();
 	$.each(data, function(key, value) {
-		$('#users').append('<div>' + value.username + '- Score: ' +  value.score + '</div>');
+		$('#users').append('<div style="background-color:' + value.color + '">' + value.username + '- Score: ' +  value.score + '</div>');
+		$("<style type='text/css'> .selectedBy" + value.id + " { background-color: " + value.color + " !important;} </style>").appendTo("head");
 	});
 });
 
@@ -89,9 +95,9 @@ socket.on('updateSelections', function(data) {
     
     //if this wasn't you, remove their other selections and highlight this one
     if (data.user !== userID) {
-    	$('.selectedBy' + data.user).removeClass('selectedBy' + data.user).removeClass('selectedByOther');
+    	$('.selectedBy' + data.user).removeClass('selectedBy' + data.user);
     	for (var i in data.gridIndices) {
-	    	$('#' + data.side + ' .square[data-grid-index=' + data.gridIndices[i] + ']').addClass('selectedByOther').addClass('selectedBy' + data.user);
+	    	$('#' + data.side + ' .square[data-grid-index=' + data.gridIndices[i] + ']').addClass('selectedBy' + data.user);
 	    }  
     }       
 });
@@ -281,7 +287,7 @@ $(function(){
 				direction = 'horizontal';
 			}
 		}
-		$('.selected').removeClass('selected');
+		$('.selected').removeClass('selected').removeClass('selectedBy' + userID);
 		$('.horizontal').removeClass('horizontal');
 		$('.vertical').removeClass('vertical');
 		var word = getWord(this, direction);
@@ -297,7 +303,7 @@ $(function(){
 			gridIndices.push($(word.squares[i]).attr('data-grid-index'));
 		}
 		socket.emit('updateSelection', { user: userID, gridIndices: gridIndices, side: $(word.squares[0]).closest('.face').attr('id'), wordIndex: word.index, wordDirection: word.direction } );
-		$(word.squares).addClass('selected').addClass(direction).removeClass('selectedByOther').addClass('selectedBy' + userID);
+		$(word.squares).addClass('selected').addClass(direction).addClass('selectedBy' + userID);
 		word.direction = direction;
 
 		currentWord = word;

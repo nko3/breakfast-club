@@ -350,10 +350,11 @@ io.sockets.on('connection', function (socket) {
     // we store the username in the socket session for this client
     socket.username = data.username;
     socket.userID = data.id;
+    socket.userColor = data.color;
 
     findById(socket.userID, function(err, user) {
         if (user) {
-            usernames[socket.userID] = {id: socket.userID, username: socket.username, score: user.score};
+            usernames[socket.userID] = {id: socket.userID, username: socket.username, score: user.score, color: socket.userColor};
             // echo globally (all clients) that a person has connected
             socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has connected');
             // update the list of users in chat, client-side
