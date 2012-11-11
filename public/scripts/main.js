@@ -218,7 +218,7 @@ $(function(){
 		//backspace - delete last letter that's not empty or part of a correct word
 		if(e.which == 8) {
 			$(currentWord.squares).find('.letter').not(':empty').not('.correctWord').last().html('');
-			event.preventDefault();
+			e.preventDefault();
 		}
 		//letter
 		var letter = String.fromCharCode(e.which);
