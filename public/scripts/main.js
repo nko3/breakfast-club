@@ -64,7 +64,7 @@ socket.on('guessresults', function(data) {
 			var square = word.squares[i];
 			$(square).find('.letter:not(.correctWord)').html('');
 		}
-		if (data.user === userID) {
+		if (data.data.user === userID) {
 			//play incorrect sound
 			var audio = document.getElementById("failSound");
 			audio.play();
