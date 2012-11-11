@@ -256,7 +256,7 @@ io.sockets.on('connection', function (socket) {
     }
     var crossword;
     for(var i in clientCrosswords){
-      if (serverCrosswords[i].gameID){
+      if (clientCrosswords[i].gameID){
         crossword = clientCrosswords[i];
         break;
       }
