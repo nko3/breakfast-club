@@ -186,6 +186,10 @@ $(function(){
 		//letter
 		var letter = String.fromCharCode(e.which);
 		letter = letter.match(/[A-Za-z]/);
+		if (!letter || letter.length < 1){
+			return;
+		}
+		letter = letter[0];
 		var box = false;
 		//for each letter in the word
 		for (var i in currentWord.squares){

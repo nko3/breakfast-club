@@ -269,7 +269,10 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('sendletter', function (data) {
-    console.log('letter sent.');
+    console.log('letter sent: '+data.letter);
+    if (!data.letter){
+      return;
+    }
     var crossword;
     for(var i in clientCrosswords){
       if (serverCrosswords[i].gameID){
@@ -277,7 +280,7 @@ io.sockets.on('connection', function (socket) {
         break;
       }
     }
-    crossword.guessed[data.index] = data.letter.join('');
+    crossword.guessed[data.index] = data.letter;
     socket.broadcast.emit('updateletter', data);
   });
 
