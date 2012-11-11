@@ -64,6 +64,9 @@ socket.on('guessresults', function(data) {
 			var square = word.squares[i];
 			$(square).find('.letter:not(.correctWord)').html('');
 		}
+		//play incorrect sound
+		var audio = document.getElementById("failSound");
+		audio.play();
 		//refocus on this word
 		currentWord.done = false;
 	} else {
@@ -73,6 +76,9 @@ socket.on('guessresults', function(data) {
 			var square = word.squares[i];
 			$(square).find('.letter').addClass('correctWord');
 		}
+		//play correct sound
+		var audio = document.getElementById("winSound");
+		audio.play();
 	}
 });
 
