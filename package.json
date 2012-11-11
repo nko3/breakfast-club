@@ -1,7 +1,7 @@
 {
   "name": "nko3-breakfast-club",
-  "version": "0.0.5",
-  "description": "Breakfast Club",
+  "version": "0.0.6",
+  "description": "LexiCube",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
@@ -16,7 +16,6 @@
     "ejs": "*",
     "less-middleware": "*",
     "socket.io": "0.9",
-    "session.socket.io": "*",
     "connect": "*",
     "passport": "*",
     "passport-local": "*"
