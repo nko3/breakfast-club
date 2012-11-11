@@ -35,7 +35,8 @@ socket.on('updateusers', function(data) {
 	$('#users').empty();
 	$.each(data, function(key, value) {
 		$('#users').append('<div style="background-color:' + value.color + '">' + value.username + '- Score: ' +  value.score + '</div>');
-		$("<style type='text/css'> .selectedBy" + value.id + " { background-color: " + value.color + " !important;} </style>").appendTo("head");
+		$('#userStyles').empty();
+		$("<style type='text/css'> .selectedBy" + value.id + " { background-color: " + value.color + " !important;} </style>").appendTo("#userStyles");
 	});
 });
 
