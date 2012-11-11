@@ -233,8 +233,23 @@ var buildGrid = function(obj, gameID) {
     down: obj.clues.down
   };
 
-  clientCrosswords.push(clientCrossword);
-  serverCrosswords.push(serverCrossword);
+  replace = -1;
+
+  for(i=0; i<clientCrosswords.length; i++) {
+    if (clientCrosswords[i].gameID === gameID) {
+      replace = i;
+    }
+  }
+
+  if (replace >= 0 ) {
+    clientCrosswords[replace] = clientCrossword;
+    serverCrosswords[replace] = serverCrossword;
+    io.sockets.emit('updategrid', clientCrosswords[replace]);
+  }
+  else {
+    clientCrosswords.push(clientCrossword);
+    serverCrosswords.push(serverCrossword);
+  }
 };
 
 var usedPuzzles = [];
@@ -315,16 +330,6 @@ app.post('/register', function(req, resp){
 app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
-});
-
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-  User.findOne(id, function (err, user) {
-    done(err, user);
-  });
 });
 
 var server = http.createServer(app).listen(app.get('port'), function(){
@@ -428,9 +433,15 @@ io.sockets.on('connection', function (socket) {
     if (result === 'correct') {
       findById(data.user, function(err, user) {
         if (user) {
-          user.score++;
-          usernames[user.id].score++;
+          var newScore = user.score + data.guess.length;
+          user.score = newScore;
+          usernames[user.id].score = newScore;
           io.sockets.emit('updateusers', usernames);
+
+          if (crossword.correct.indexOf(0) === -1) {
+            console.log('side complete');
+            getPuzzle(data.side, usedPuzzles);
+          }
         }
       });
     }

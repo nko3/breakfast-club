@@ -64,11 +64,13 @@ socket.on('guessresults', function(data) {
 			var square = word.squares[i];
 			$(square).find('.letter:not(.correctWord)').html('');
 		}
-		//play incorrect sound
-		var audio = document.getElementById("failSound");
-		audio.play();
-		//refocus on this word
-		currentWord.done = false;
+		if (data.data.user === userID) {
+			//play incorrect sound
+			var audio = document.getElementById("failSound");
+			audio.play();
+			//refocus on this word
+			currentWord.done = false;
+		}
 	} else {
 		var firstSquare = $('#' + data.data.side + ' .square[data-grid-index="' + data.data.firstSquare + '"]').first();
 		var word = getWord(firstSquare, data.data.direction);
