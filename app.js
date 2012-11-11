@@ -7,7 +7,6 @@ var express = require('express')
   , connect = require('connect')
   , user = require('./routes/user')
   , http = require('http')
-  , util = require('util')
   , passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy
   , path = require('path');

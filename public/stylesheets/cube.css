@@ -121,6 +121,11 @@ body {
   clear: left;
   margin-top: 12px;
 }
+#logout {
+  position: absolute;
+  top: 15px;
+  right: 60px;
+}
 #wrapper {
   width: 1000px;
   height: 700px;

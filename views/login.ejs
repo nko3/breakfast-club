@@ -10,8 +10,10 @@
           <img id="lexiLogo" src="images/logo.png" />
           <iframe id="nodeVote" src="http://nodeknockout.com/iframe/breakfast-club" frameborder="0" scrolling="no" allowtransparency="true" width="115" height="25"></iframe>
         </div>
-        
         <div id="wrapper">
+            <% if (message) { %>
+                <p><%= message %></p>
+            <% } %>
             <div class="pull-right">
                 <form action="/login" method="post">
                     <h2>Login</h2>
@@ -40,7 +42,7 @@
                         <input type="password" name="password"/>
                     </div>
                     <div>
-                        <input type="submit" value="Log In"/>
+                        <input type="submit" value="Register"/>
                     </div>
                 </form>
             </div>
