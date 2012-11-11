@@ -419,7 +419,7 @@ function checkWord(data){
 
   if (result === 'correct') {
     findById(data.user, function(err, user) {
-      if (user) {
+      if (user === data.user) {
         var newScore = user.score + data.guess.length;
         user.score = newScore;
         usernames[user.id].score = newScore;
@@ -498,7 +498,7 @@ io.sockets.on('connection', function (socket) {
     socket.userColor = data.color;
 
     findById(socket.userID, function(err, user) {
-        if (user) {
+        if (user && users[data.id - 1]) {
             usernames[socket.userID] = {id: socket.userID, username: socket.username, score: user.score, color: socket.userColor};
             // echo globally (all clients) that a person has connected
             socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has connected');
@@ -509,6 +509,9 @@ io.sockets.on('connection', function (socket) {
               socket.emit('updategrid', clientCrosswords[i]);
             }
         }
+        else {
+          socket.emit('refreshuser', data.id);
+        }
     });
   });
 
@@ -516,7 +519,6 @@ io.sockets.on('connection', function (socket) {
     console.log('user #' + data.user + ' has selected a word');
 
     io.sockets.emit('updateSelections', data);
-
   });
 
   socket.on('checkword', checkWord);
