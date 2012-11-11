@@ -239,7 +239,7 @@ io.sockets.on('connection', function (socket) {
     io.sockets.emit('updateusers', usernames);
 
     for (i=0; i < clientCrosswords.length; i++) {
-      io.sockets.emit('updategrid', clientCrosswords[i]);
+      socket.emit('updategrid', clientCrosswords[i]);
     }
   });
 
